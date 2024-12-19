@@ -9,12 +9,15 @@ export default class ParticulateMatter {
     constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene
+        this.time = this.experience.time
         this.debug = this.experience.debug
 
         this.parameters = {}
         this.parameters.maxCount = 50000 // Large max count
         this.parameters.count = 5000 // Initial visible count
         this.parameters.color = "#878787"
+        this.parameters.speedMultiplier = 0.004
+        this.parameters.intensity = 1
 
         this.geometry = null
         this.material = null
@@ -61,13 +64,13 @@ export default class ParticulateMatter {
             uniforms: {
                 uTime: { value: 0 },
                 uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-                uSize: { value: 4 },
+                uSize: { value: 25 },
                 uColor: { value: new THREE.Color(this.parameters.color) },
-                uVisibleCount: { value: this.parameters.count }, // Pass visible count to the shader
+                uVisibleCount: { value: this.parameters.count },
+                uIntensity: { value: this.parameters.intensity },
             },
             transparent: true,
             depthWrite: false,
-            vertexColors: true,
             blending: THREE.AdditiveBlending,
         })
 
@@ -116,6 +119,20 @@ export default class ParticulateMatter {
                 this.material.uniforms.uColor.value.set(this.parameters.color)
             })
 
+            this.debugFolder
+                .add(this.parameters, "speedMultiplier")
+                .min(0)
+                .max(0.02)
+                .step(0.0001)
+                .name("Speed Multiplier")
+
+            this.debugFolder
+                .add(this.parameters, "intensity")
+                .min(0.01)
+                .max(50)
+                .step(0.1)
+                .name("FBM Intensity");
+            
             this.positionFolder = this.debugFolder.addFolder("Position")
             this.positionFolder
                 .add(this.pm.position, "x")
@@ -142,5 +159,7 @@ export default class ParticulateMatter {
 
     resize() {}
 
-    update() {}
+    update() {
+        this.material.uniforms.uTime.value = this.time.elapsed * this.parameters.speedMultiplier
+    }
 }

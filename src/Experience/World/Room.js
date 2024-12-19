@@ -18,7 +18,7 @@ export default class World {
             if(child instanceof THREE.Group) {
                 child.children.forEach(groupChild => {
                     groupChild.castShadow = true
-                    groupChild.receiveShadow = true
+                    groupChild.receiveShadow = true                    
                 })
             }
             child.castShadow = true

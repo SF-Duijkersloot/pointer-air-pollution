@@ -27,7 +27,13 @@ export default class World {
     }
 
     update() {
-        if (this.controls) this.controls.update()
+        if (this.controls) {
+            this.controls.update()
+        }
+
+        if (this.particulateMatter) {
+            this.particulateMatter.update()
+        }
     }
 
 }
