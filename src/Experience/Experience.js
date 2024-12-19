@@ -4,6 +4,7 @@ import Sizes from './Utils/Sizes.js'
 import Time from './Utils/Time.js'
 import Resources from './Utils/Resources.js'
 import assets from './Utils/assets.js'
+import Debug from './Utils/Debug.js'
 
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
@@ -22,6 +23,7 @@ export default class Experience {
         Experience.instance = this
 
         this.canvas = canvas
+        this.debug = new Debug()
         this.scene = new THREE.Scene()
         this.time = new Time()
         this.sizes = new Sizes()
@@ -33,6 +35,7 @@ export default class Experience {
         this.sizes.on('resize', () => {
             this.resize()
         })
+
         this.time.on('update', () => {
             this.update()
         })

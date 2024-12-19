@@ -25,6 +25,7 @@ export default class Camera {
         this.scene.add(this.perspectiveCamera)
         // this.perspectiveCamera.position.set(29, 14, 12)
         this.perspectiveCamera.position.set(2, 3.5, 6)
+        // this.perspectiveCamera.lookAt(0, 0, 0)
     }
 
     createOrthographicCamera() {
