@@ -1,7 +1,7 @@
-import * as THREE from 'three'
 import Experience from '../Experience.js'
 
 import Room from './Room.js'
+import Controls from './Controls.js'
 import Environment from './Environment.js'
 
 export default class World {
@@ -16,6 +16,7 @@ export default class World {
         this.resources.on('ready', () => {
             this.environment = new Environment()
             this.room = new Room()
+            this.controls = new Controls()
         })
     }
 
@@ -23,6 +24,7 @@ export default class World {
     }
 
     update() {
+        if (this.controls) this.controls.update()
     }
 
 }
