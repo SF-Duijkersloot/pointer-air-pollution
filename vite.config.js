@@ -1,8 +1,8 @@
 import glsl from 'vite-plugin-glsl'
 
 export default {
-    root: 'src/',
-    publicDir: '../static/',
+    root: 'src',
+    publicDir: '../public',
     base: './',
     server:
     {

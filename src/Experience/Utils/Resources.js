@@ -35,14 +35,14 @@ export default class Resources extends EventEmitter{
                 this.loaders.gltfLoader.load(asset.path, (file) => {
                     this.singleAssetLoaded(asset, file)
                 })
-            }
+            }   
         }
     }
 
     singleAssetLoaded(asset, file) {
         this.items[asset.name] = file
         this.loaded++
-
+        
         if(this.loaded === this.queue) {
             console.log('All items loaded')
 
