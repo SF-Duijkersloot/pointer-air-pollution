@@ -1,8 +1,10 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
+import { EventEmitter } from 'events'
 
-export default class Renderer {
+export default class Renderer extends EventEmitter {
     constructor() {
+        super()
         this.experience = new Experience()
         this.sizes = this.experience.sizes
         this.scene = this.experience.scene
@@ -25,6 +27,7 @@ export default class Renderer {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
         this.renderer.setSize(this.sizes.width, this.sizes.height)
         this.renderer.setPixelRatio(this.sizes.pixelRatio)
+        this.emit('ready')
     }
 
     resize() {

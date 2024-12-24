@@ -160,6 +160,16 @@ export default class ParticulateMatter {
     resize() {}
 
     update() {
-        this.material.uniforms.uTime.value = this.time.elapsed * this.parameters.speedMultiplier
+        const TIME_WRAP = 50; // Wrap time to 1000 units (adjust as needed)
+        
+        // make elapsedTime go from 0 to TIME_WRAP and then back to 0
+        const elapsedTime = (this.time.elapsed * this.parameters.speedMultiplier) % TIME_WRAP;
+        const wrappedTime = elapsedTime > TIME_WRAP / 2 ? TIME_WRAP - elapsedTime : elapsedTime;
+
+        console.log(wrappedTime);
+
+        // Pass the wrapped time to the shader uniform
+        this.material.uniforms.uTime.value = wrappedTime;
     }
+    
 }
