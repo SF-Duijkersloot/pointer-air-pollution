@@ -12,164 +12,211 @@ export default class ParticulateMatter {
         this.time = this.experience.time
         this.debug = this.experience.debug
 
-        this.parameters = {}
-        this.parameters.maxCount = 50000 // Large max count
-        this.parameters.count = 5000 // Initial visible count
-        this.parameters.color = "#878787"
-        this.parameters.speedMultiplier = 0.004
-        this.parameters.intensity = 1
+        this.parameters = {
+            speedMultiplier: 0.004,
+            intensity: 1,
+            particleSize: 6,
+        }
 
-        this.geometry = null
-        this.material = null
-        this.pm = null
+        this.categories = {
+            consumenten: {
+                count: 16264,
+                color: "#4b10d5",
+                visible: true
+            },
+            verkeer: {
+                count: 15063,
+                color: "#009e7e",
+                visible: true
+            },
+            industrie: {
+                count: 7035,
+                color: "#d30d1e",
+                visible: true
+            },
+            landbouw: {
+                count: 1598,
+                color: "#904750",
+                visible: true
+            },
+            bouw: {
+                count: 1530,
+                color: "#6d7b51",
+                visible: true
+            },
+            overig: {
+                count: 3360,
+                color: "#0f3838",
+                visible: true
+            }
+        }
 
-        this.createParticulateMatter()
+        this.particles = new Map() // Store particle systems for each category
+        this.createAllParticles()
         this.debugOptions()
     }
 
-    createParticulateMatter() {
-        // Clean up existing particles
-        if (this.pm) {
-            this.geometry.dispose()
-            this.material.dispose()
-            this.scene.remove(this.pm)
+    createParticlesForCategory(category, data) {
+        const geometry = new THREE.BufferGeometry()
+        const positionArray = new Float32Array(data.count * 3)
+        const scaleArray = new Float32Array(data.count)
+
+        for (let i = 0; i < data.count; i++) {
+            positionArray[i * 3 + 0] = (Math.random() - 0.5) * 1.8
+            positionArray[i * 3 + 1] = Math.random() * 1.85
+            positionArray[i * 3 + 2] = (Math.random() - 0.5) * 1.8
+            // scale between 0.1 and 1
+            scaleArray[i] = Math.random() * 0.9 + 0.1
         }
 
-        // Create large geometry buffer
-        this.geometry = new THREE.BufferGeometry()
-        this.positionArray = new Float32Array(this.parameters.maxCount * 3)
-        this.scaleArray = new Float32Array(this.parameters.maxCount)
+        geometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3))
+        geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1))
 
-        for (let i = 0; i < this.parameters.maxCount; i++) {
-            this.positionArray[i * 3 + 0] = (Math.random() - 0.5) * 1.8
-            this.positionArray[i * 3 + 1] = Math.random() * 1.85
-            this.positionArray[i * 3 + 2] = (Math.random() - 0.5) * 1.8
-
-            this.scaleArray[i] = Math.random()
-        }
-
-        this.geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(this.positionArray, 3)
-        )
-        this.geometry.setAttribute(
-            "aScale",
-            new THREE.BufferAttribute(this.scaleArray, 1)
-        )
-
-        // Shader material
-        this.material = new THREE.ShaderMaterial({
+        const material = new THREE.ShaderMaterial({
             vertexShader: pmVertexShader,
             fragmentShader: pmFragmentShader,
             uniforms: {
                 uTime: { value: 0 },
                 uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-                uSize: { value: 25 },
-                uColor: { value: new THREE.Color(this.parameters.color) },
-                uVisibleCount: { value: this.parameters.count },
+                uSize: { value: this.parameters.particleSize },
+                uColor: { value: new THREE.Color(data.color) },
+                uVisibleCount: { value: data.visible ? data.count : 0 },
                 uIntensity: { value: this.parameters.intensity },
             },
             transparent: true,
+            vertexColors: true,
             depthWrite: false,
-            blending: THREE.AdditiveBlending,
+            // blending: THREE.AdditiveBlending,
         })
 
-        // Create Points
-        this.pm = new THREE.Points(this.geometry, this.material)
-        this.pm.position.set(0.037, 0, 0.235)
-        this.pm.rotateY(Math.PI / 4) // Rotate to match the room
-        this.scene.add(this.pm)
+        const particles = new THREE.Points(geometry, material)
+        particles.position.set(0.037, 0, 0.235)
+        particles.rotateY(Math.PI / 4)
+        
+        return {
+            geometry,
+            material,
+            points: particles
+        }
     }
 
-    smoothUpdateCount(newCount, duration = 1) {
-        // Use GSAP for smooth interpolation of the count
-        gsap.to(this.parameters, {
-            count: newCount,
+    createAllParticles() {
+        // Clean up existing particles
+        this.particles.forEach(({ geometry, material, points }) => {
+            geometry.dispose()
+            material.dispose()
+            this.scene.remove(points)
+        })
+        this.particles.clear()
+
+        // Create new particles for each category
+        for (const [category, data] of Object.entries(this.categories)) {
+            const particleSystem = this.createParticlesForCategory(category, data)
+            this.particles.set(category, particleSystem)
+            if (data.visible) {
+                this.scene.add(particleSystem.points)
+            }
+        }
+    }
+
+    toggleCategory(category, visible, duration = 1) {
+        this.categories[category].visible = visible
+        const particleSystem = this.particles.get(category)
+        
+        if (!particleSystem) return
+
+        if (visible && !this.scene.children.includes(particleSystem.points)) {
+            this.scene.add(particleSystem.points)
+        }
+
+        gsap.to(particleSystem.material.uniforms.uVisibleCount, {
+            value: visible ? this.categories[category].count : 0,
             duration: duration,
             ease: "power1.inOut",
-            onUpdate: () => {
-                this.material.uniforms.uVisibleCount.value =
-                    this.parameters.count
-            },
+            onComplete: () => {
+                if (!visible) {
+                    this.scene.remove(particleSystem.points)
+                }
+            }
         })
+    }
+
+    updateCategoryColor(category, color) {
+        this.categories[category].color = color
+        const particleSystem = this.particles.get(category)
+        if (particleSystem) {
+            particleSystem.material.uniforms.uColor.value.set(color)
+        }
     }
 
     debugOptions() {
         if (this.debug) {
             this.debugFolder = this.debug.gui.addFolder("Particulate Matter")
-            this.debugFolder.open()
+            
+            // Category controls
+            const categoryFolder = this.debugFolder.addFolder("Categories")
+            for (const [category, data] of Object.entries(this.categories)) {
+                // Create a folder for each category
+                const categorySubFolder = categoryFolder.addFolder(category)
+                
+                // Add visibility toggle
+                categorySubFolder
+                    .add(data, "visible")
+                    .name("Visible")
+                    .onChange((visible) => {
+                        this.toggleCategory(category, visible)
+                    })
 
-            this.debugFolder
-                .add(this.parameters, "count")
-                .min(100)
-                .max(this.parameters.maxCount)
-                .step(1)
+                // Add color picker
+                categorySubFolder
+                    .addColor(data, "color")
+                    .name("Color")
+                    .onChange((color) => {
+                        this.updateCategoryColor(category, color)
+                    })
+
+                // Display particle count (non-editable)
+                categorySubFolder
+                    .add(data, "count")
+                    .name("Particle Count")
+                    .disable()
+            }
+
+            // General parameters
+            const parametersFolder = this.debugFolder.addFolder("Parameters")
+            parametersFolder
+                .add(this.parameters, "particleSize", 0, 100, 0.1)
+                .name("Particle Size")
                 .onChange((value) => {
-                    this.smoothUpdateCount(value, 1) // Smoothly update count
+                    this.particles.forEach(({ material }) => {
+                        material.uniforms.uSize.value = value
+                    })
                 })
 
-            this.debugFolder
-                .add(this.material.uniforms.uSize, "value")
-                .min(0)
-                .max(100)
-                .step(0.1)
-                .name("Size")
-
-            this.debugFolder.addColor(this.parameters, "color").onChange(() => {
-                this.material.uniforms.uColor.value.set(this.parameters.color)
-            })
-
-            this.debugFolder
-                .add(this.parameters, "speedMultiplier")
-                .min(0)
-                .max(0.02)
-                .step(0.0001)
+            parametersFolder
+                .add(this.parameters, "speedMultiplier", 0, 0.02, 0.0001)
                 .name("Speed Multiplier")
 
-            this.debugFolder
-                .add(this.parameters, "intensity")
-                .min(0.01)
-                .max(50)
-                .step(0.1)
-                .name("FBM Intensity");
-            
-            this.positionFolder = this.debugFolder.addFolder("Position")
-            this.positionFolder
-                .add(this.pm.position, "x")
-                .min(-1)
-                .max(2.5)
-                .step(0.001)
-                .name("PM X")
-
-            this.positionFolder
-                .add(this.pm.position, "y")
-                .min(-1)
-                .max(2.5)
-                .step(0.001)
-                .name("PM Y")
-
-            this.positionFolder
-                .add(this.pm.position, "z")
-                .min(-1)
-                .max(2.5)
-                .step(0.001)
-                .name("PM Z")
+            parametersFolder
+                .add(this.parameters, "intensity", 0.01, 50, 0.1)
+                .name("FBM Intensity")
         }
     }
 
-    resize() {}
+    resize() {
+        const pixelRatio = Math.min(window.devicePixelRatio, 2)
+        this.particles.forEach(({ material }) => {
+            material.uniforms.uPixelRatio.value = pixelRatio
+        })
+    }
 
     update() {
-        const TIME_WRAP = 50; // Wrap time to 1000 units (adjust as needed)
-        
-        // make elapsedTime go from 0 to TIME_WRAP and then back to 0
-        const elapsedTime = (this.time.elapsed * this.parameters.speedMultiplier) % TIME_WRAP;
-        const wrappedTime = elapsedTime > TIME_WRAP / 2 ? TIME_WRAP - elapsedTime : elapsedTime;
+        const TIME_WRAP = 50
+        const elapsedTime = (this.time.elapsed * this.parameters.speedMultiplier) % TIME_WRAP
+        const wrappedTime = elapsedTime > TIME_WRAP / 2 ? TIME_WRAP - elapsedTime : elapsedTime
 
-        console.log(wrappedTime);
-
-        // Pass the wrapped time to the shader uniform
-        this.material.uniforms.uTime.value = wrappedTime;
+        this.particles.forEach(({ material }) => {
+            material.uniforms.uTime.value = wrappedTime
+        })
     }
-    
 }
