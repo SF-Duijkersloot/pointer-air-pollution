@@ -24,7 +24,8 @@ export default class Camera {
         )
         this.scene.add(this.perspectiveCamera)
         // this.perspectiveCamera.position.set(29, 14, 12)
-        this.perspectiveCamera.position.set(2, 3.5, 6)
+        // this.perspectiveCamera.position.set(0, 4.5, 9)
+        this.perspectiveCamera.position.set(0, 3.5, 6)
         // this.perspectiveCamera.lookAt(0, 0, 0)
     }
 
@@ -49,7 +50,7 @@ export default class Camera {
         const divisions = 10
 
         const gridHelper = new THREE.GridHelper(size, divisions)
-        this.scene.add(gridHelper)
+        // this.scene.add(gridHelper)
 
         // // Axes helper
         // const axesHelper = new THREE.AxesHelper(10)

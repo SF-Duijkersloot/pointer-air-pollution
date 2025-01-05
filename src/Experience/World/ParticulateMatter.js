@@ -21,33 +21,33 @@ export default class ParticulateMatter {
         this.categories = {
             consumenten: {
                 count: 16264,
-                color: "#4b10d5",
-                visible: true
+                color: "#ffbe0b",
+                visible: false
             },
             verkeer: {
                 count: 15063,
-                color: "#009e7e",
-                visible: true
+                color: "#497bdf",
+                visible: false
             },
             industrie: {
                 count: 7035,
-                color: "#d30d1e",
-                visible: true
+                color: "#ff006e",
+                visible: false
             },
             landbouw: {
                 count: 1598,
-                color: "#904750",
-                visible: true
+                color: "#8338ec",
+                visible: false
             },
             bouw: {
                 count: 1530,
-                color: "#6d7b51",
-                visible: true
+                color: "#83383a",
+                visible: false
             },
             overig: {
                 count: 3360,
-                color: "#0f3838",
-                visible: true
+                color: "#90be6d",
+                visible: false
             }
         }
 
@@ -84,13 +84,13 @@ export default class ParticulateMatter {
                 uIntensity: { value: this.parameters.intensity },
             },
             transparent: true,
-            vertexColors: true,
+            // vertexColors: true,
             depthWrite: false,
             // blending: THREE.AdditiveBlending,
         })
 
         const particles = new THREE.Points(geometry, material)
-        particles.position.set(0.037, 0, 0.235)
+        particles.position.set(0.037, -.5, 0.235)
         particles.rotateY(Math.PI / 4)
         
         return {
@@ -119,7 +119,7 @@ export default class ParticulateMatter {
         }
     }
 
-    toggleCategory(category, visible, duration = 1) {
+    toggleCategory(category, visible, duration = 1.5) {
         this.categories[category].visible = visible
         const particleSystem = this.particles.get(category)
         

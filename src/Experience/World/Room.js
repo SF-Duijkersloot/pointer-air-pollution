@@ -27,6 +27,7 @@ export default class World {
 
         this.scene.add(this.roomScene)
         this.roomScene.scale.set(0.1, 0.1, 0.1)
+        this.roomScene.position.y = -.5
     }
 
     resize() {
