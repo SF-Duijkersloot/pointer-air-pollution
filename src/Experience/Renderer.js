@@ -36,7 +36,8 @@ export default class Renderer extends EventEmitter {
     }
 
     update() {
-        this.renderer.render(this.scene, this.camera.perspectiveCamera)
+        this.renderer.render(this.scene, this.camera.orthographicCamera)
+        // this.renderer.render(this.scene, this.camera.perspectiveCamera)
     }
 
 }

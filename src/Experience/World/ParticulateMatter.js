@@ -90,7 +90,7 @@ export default class ParticulateMatter {
         })
 
         const particles = new THREE.Points(geometry, material)
-        particles.position.set(0.037, -.5, 0.235)
+        particles.position.set(0.037, 0, 0.235)
         particles.rotateY(Math.PI / 4)
         
         return {
