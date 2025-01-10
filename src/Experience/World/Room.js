@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
+import { vec3 } from 'three/tsl'
 
 export default class World {
     constructor() {
@@ -18,15 +19,20 @@ export default class World {
             if(child instanceof THREE.Group) {
                 child.children.forEach(groupChild => {
                     groupChild.castShadow = true
-                    groupChild.receiveShadow = true                    
+                    groupChild.receiveShadow = true
+                    groupChild.material.side = THREE.DoubleSide                    
                 })
             }
             child.castShadow = true
             child.receiveShadow = true  
         })
 
+        // const curtains = this.roomScene.children.find(child => child.name === 'curtain')
+        // curtains.material.transparent = true
+        // curtains.material.opacity = 0.7
+
         this.scene.add(this.roomScene)
-        this.roomScene.scale.set(0.1, 0.1, 0.1)
+        this.roomScene.scale.set(0.4, 0.4, 0.4)
         // this.roomScene.position.y = -.5
     }
 

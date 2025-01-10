@@ -11,7 +11,8 @@ export default class Environment {
         this.roomScene = this.room.scene
 
         this.parameters = {
-            background: '#f7f0e1'
+            background: '#EFECE6'
+            // background: '#f7f0e1'
         }
 
         this.setSunlight()
@@ -36,13 +37,11 @@ export default class Environment {
     }
 
     setBackground() {
-        this.scene.background = new THREE.Color('#f7f0e1')
+        this.scene.background = new THREE.Color(this.parameters.background)
         // add gui
         this.debugFolder = this.debug.gui.addFolder('environment')
         this.debugFolder.open()
-        this.debugFolder.addColor(this.parameters, 'background').name('background').onChange(() => {
-            this.scene.background.set(this.parameters.background)
-        })
+        this.debugFolder.addColor(this.parameters, 'background').onChange(() => this.scene.background.set(this.parameters.background))
 
     }
 
