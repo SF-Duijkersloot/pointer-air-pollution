@@ -20,12 +20,12 @@ export default class ParticulateMatter {
         };
 
         this.categories = {
-            bouw: { count: 1530, color: "#83383a", visible: true },
-            landbouw: { count: 1598, color: "#8338ec", visible: true },
-            industrie: { count: 7035, color: "#ff006e", visible: true },
-            verkeer: { count: 15063, color: "#497bdf", visible: true },
-            consumenten: { count: 16264, color: "#ffbe0b", visible: true },
-            overig: { count: 3360, color: "#90be6d", visible: true },
+            bouw: { count: 1530, color: "#83383a", visible: false },
+            landbouw: { count: 1598, color: "#8338ec", visible: false },
+            industrie: { count: 7035, color: "#ff006e", visible: false },
+            verkeer: { count: 15063, color: "#497bdf", visible: false },
+            consumenten: { count: 16264, color: "#ffbe0b", visible: false },
+            overig: { count: 3360, color: "#90be6d", visible: false },
         };
 
         this.totalParticles = Object.values(this.categories).reduce(
