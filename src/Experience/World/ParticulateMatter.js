@@ -38,21 +38,21 @@ export default class ParticulateMatter {
         this.debugOptions();
     }
 
-    createParticlesForCategory(category, data, startHeight, layerHeight) {
-        const geometry = new THREE.BufferGeometry();
-        const positionArray = new Float32Array(data.count * 3);
-        const scaleArray = new Float32Array(data.count);
+    createParticlesForCategory(category, data) {
+        const geometry = new THREE.BufferGeometry()
+        const positionArray = new Float32Array(data.count * 3)
+        const scaleArray = new Float32Array(data.count)
 
         for (let i = 0; i < data.count; i++) {
-            positionArray[i * 3 + 0] = (Math.random() - 0.5) * this.parameters.areaSize;
-            positionArray[i * 3 + 1] =
-                startHeight + Math.random() * layerHeight;
-            positionArray[i * 3 + 2] = (Math.random() - 0.5) * this.parameters.areaSize;
-            scaleArray[i] = Math.random() * 0.9 + 0.1; // Scale between 0.1 and 1
+            positionArray[i * 3 + 0] = (Math.random() - 0.5) * 1.8
+            positionArray[i * 3 + 1] = Math.random() * 1.85
+            positionArray[i * 3 + 2] = (Math.random() - 0.5) * 1.8
+            // scale between 0.1 and 1
+            scaleArray[i] = Math.random() * 0.9 + 0.1
         }
 
-        geometry.setAttribute("position", new THREE.BufferAttribute(positionArray, 3));
-        geometry.setAttribute("aScale", new THREE.BufferAttribute(scaleArray, 1));
+        geometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3))
+        geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1))
 
         const material = new THREE.ShaderMaterial({
             vertexShader: pmVertexShader,
@@ -66,61 +66,49 @@ export default class ParticulateMatter {
                 uIntensity: { value: this.parameters.intensity },
             },
             transparent: true,
+            // vertexColors: true,
             depthWrite: false,
-        });
+            // blending: THREE.AdditiveBlending,
+        })
 
-        const particles = new THREE.Points(geometry, material);
-        particles.position.set(-0.0625, 0.225, 0.075);
-        particles.rotateY(Math.PI / 4);
-
+        const particles = new THREE.Points(geometry, material)
+        particles.position.set(0.037, 0, 0.235)
+        particles.rotateY(Math.PI / 4)
+        
         return {
             geometry,
             material,
-            points: particles,
-        };
+            points: particles
+        }
     }
 
     createAllParticles() {
         // Clean up existing particles
         this.particles.forEach(({ geometry, material, points }) => {
-            geometry.dispose();
-            material.dispose();
-            this.scene.remove(points);
-        });
-        this.particles.clear();
+            geometry.dispose()
+            material.dispose()
+            this.scene.remove(points)
+        })
+        this.particles.clear()
 
-        // Variables for stacking layers
-        const totalHeight = 1.52; // Total height of the stack
-        let currentHeight = 0;
-
+        // Create new particles for each category
         for (const [category, data] of Object.entries(this.categories)) {
-            const percentage = data.count / this.totalParticles;
-            const layerHeight = totalHeight * percentage;
-
-            const particleSystem = this.createParticlesForCategory(
-                category,
-                data,
-                currentHeight,
-                layerHeight
-            );
-
-            this.particles.set(category, particleSystem);
-            currentHeight += layerHeight;
-
+            const particleSystem = this.createParticlesForCategory(category, data)
+            this.particles.set(category, particleSystem)
             if (data.visible) {
-                this.scene.add(particleSystem.points);
+                this.scene.add(particleSystem.points)
             }
         }
     }
 
     toggleCategory(category, visible, duration = 1.5) {
-        this.categories[category].visible = visible;
-        const particleSystem = this.particles.get(category);
-
-        if (!particleSystem) return;
+        this.categories[category].visible = visible
+        const particleSystem = this.particles.get(category)
+        
+        if (!particleSystem) return
 
         if (visible && !this.scene.children.includes(particleSystem.points)) {
-            this.scene.add(particleSystem.points);
+            this.scene.add(particleSystem.points)
         }
 
         gsap.to(particleSystem.material.uniforms.uVisibleCount, {
@@ -129,10 +117,18 @@ export default class ParticulateMatter {
             ease: "power1.inOut",
             onComplete: () => {
                 if (!visible) {
-                    this.scene.remove(particleSystem.points);
+                    this.scene.remove(particleSystem.points)
                 }
-            },
-        });
+            }
+        })
+    }
+
+    updateCategoryColor(category, color) {
+        this.categories[category].color = color
+        const particleSystem = this.particles.get(category)
+        if (particleSystem) {
+            particleSystem.material.uniforms.uColor.value.set(color)
+        }
     }
 
     debugOptions() {
