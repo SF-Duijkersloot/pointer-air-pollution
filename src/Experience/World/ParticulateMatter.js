@@ -1,22 +1,23 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import Experience from "../Experience.js";
-
 import pmVertexShader from "../shaders/pm/vertex.glsl";
 import pmFragmentShader from "../shaders/pm/fragment.glsl";
 
 export default class ParticulateMatter {
     constructor() {
-        this.experience = new Experience();
-        this.scene = this.experience.scene;
-        this.time = this.experience.time;
-        this.debug = this.experience.debug;
+        this.experience = new Experience()
+        this.scene = this.experience.scene
+        this.time = this.experience.time
+        this.debug = this.experience.debug
 
         this.parameters = {
             speedMultiplier: 0.003,
             intensity: 1,
-            particleSize: 5,
+            particleSize: 6,
             areaSize: 1.75,
+            greyDelay: 1,
+            greyColor: "#d1d1d1",
         };
 
         this.categories = {
@@ -28,31 +29,30 @@ export default class ParticulateMatter {
             overig: { count: 3360, color: "#90be6d", visible: false },
         };
 
-        this.totalParticles = Object.values(this.categories).reduce(
-            (sum, cat) => sum + cat.count,
-            0
-        );
+        this.activeCategory = null;
+        this.categoryHistory = [];
+        this.isTransitioning = false;
+        this.particles = new Map();
 
-        this.particles = new Map(); // Store particle systems for each category
         this.createAllParticles();
-        this.debugOptions();
+        this.setupDebug();
     }
 
-    createParticlesForCategory(category, data) {
-        const geometry = new THREE.BufferGeometry()
-        const positionArray = new Float32Array(data.count * 3)
-        const scaleArray = new Float32Array(data.count)
+    createParticles(category, { count, color }) {
+        const geometry = new THREE.BufferGeometry();
+        const positionArray = new Float32Array(count * 3);
+        const scaleArray = new Float32Array(count);
 
-        for (let i = 0; i < data.count; i++) {
-            positionArray[i * 3 + 0] = (Math.random() - 0.5) * 1.8
-            positionArray[i * 3 + 1] = Math.random() * 1.85
-            positionArray[i * 3 + 2] = (Math.random() - 0.5) * 1.8
-            // scale between 0.1 and 1
-            scaleArray[i] = Math.random() * 0.9 + 0.1
+        for (let i = 0; i < count; i++) {
+            const i3 = i * 3;
+            positionArray[i3] = (Math.random() - 0.5) * 1.8;
+            positionArray[i3 + 1] = Math.random() * 1.85;
+            positionArray[i3 + 2] = (Math.random() - 0.5) * 1.8;
+            scaleArray[i] = Math.random() * 0.9 + 0.1;
         }
 
-        geometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3))
-        geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1))
+        geometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
+        geometry.setAttribute('aScale', new THREE.BufferAttribute(scaleArray, 1));
 
         const material = new THREE.ShaderMaterial({
             vertexShader: pmVertexShader,
@@ -61,174 +61,147 @@ export default class ParticulateMatter {
                 uTime: { value: 0 },
                 uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
                 uSize: { value: this.parameters.particleSize },
-                uColor: { value: new THREE.Color(data.color) },
-                uVisibleCount: { value: data.visible ? data.count : 0 },
+                uColor: { value: new THREE.Color(color) },
+                uVisibleCount: { value: 0 },
                 uIntensity: { value: this.parameters.intensity },
             },
             transparent: true,
-            // vertexColors: true,
             depthWrite: false,
-            // blending: THREE.AdditiveBlending,
-        })
+        });
 
-        const particles = new THREE.Points(geometry, material)
-        particles.position.set(0.037, 0, 0.235)
-        particles.rotateY(Math.PI / 4)
+        const points = new THREE.Points(geometry, material);
+        points.position.set(0.037, 0, 0.235);
+        points.rotateY(Math.PI / 4);
         
-        return {
-            geometry,
-            material,
-            points: particles
-        }
+        return { geometry, material, points };
     }
 
     createAllParticles() {
-        // Clean up existing particles
         this.particles.forEach(({ geometry, material, points }) => {
-            geometry.dispose()
-            material.dispose()
-            this.scene.remove(points)
-        })
-        this.particles.clear()
+            geometry.dispose();
+            material.dispose();
+            this.scene.remove(points);
+        });
+        this.particles.clear();
 
-        // Create new particles for each category
-        for (const [category, data] of Object.entries(this.categories)) {
-            const particleSystem = this.createParticlesForCategory(category, data)
-            this.particles.set(category, particleSystem)
-            if (data.visible) {
-                this.scene.add(particleSystem.points)
-            }
-        }
+        Object.entries(this.categories).forEach(([category, data]) => {
+            this.particles.set(category, this.createParticles(category, data));
+        });
     }
 
-    toggleCategory(category, visible, duration = 1.5) {
-        this.categories[category].visible = visible
-        const particleSystem = this.particles.get(category)
+    async toggleCategory(category, visible) {
+        if (this.isTransitioning) return;
+        this.isTransitioning = true;
+
+        const duration = 1.5;
         
-        if (!particleSystem) return
 
-        if (visible && !this.scene.children.includes(particleSystem.points)) {
-            this.scene.add(particleSystem.points)
-        }
-
-        gsap.to(particleSystem.material.uniforms.uVisibleCount, {
-            value: visible ? this.categories[category].count : 0,
-            duration: duration,
-            ease: "power1.inOut",
-            onComplete: () => {
-                if (!visible) {
-                    this.scene.remove(particleSystem.points)
-                }
-            }
-        })
-    }
-
-    updateCategoryColor(category, color) {
-        this.categories[category].color = color
-        const particleSystem = this.particles.get(category)
-        if (particleSystem) {
-            particleSystem.material.uniforms.uColor.value.set(color)
-        }
-    }
-
-    debugOptions() {
-        if (this.debug) {
-            this.debugFolder = this.debug.gui.addFolder("Particulate Matter");
-
-            // Category controls
-            const categoryFolder = this.debugFolder.addFolder("Categories");
-            for (const [category, data] of Object.entries(this.categories)) {
-                const categorySubFolder = categoryFolder.addFolder(category);
-
-                categorySubFolder
-                    .add(data, "visible")
-                    .name("Visible")
-                    .onChange((visible) => {
-                        this.toggleCategory(category, visible);
-                    });
-
-                categorySubFolder
-                    .addColor(data, "color")
-                    .name("Color")
-                    .onChange((color) => {
-                        this.updateCategoryColor(category, color);
-                    });
-
-                categorySubFolder.add(data, "count").name("Particle Count").disable();
+        if (visible && category !== this.activeCategory) {
+            if (this.activeCategory) {
+                const current = this.particles.get(this.activeCategory);
+                gsap.to(current.material.uniforms.uColor.value, {
+                    r: new THREE.Color(this.parameters.greyColor).r,
+                    g: new THREE.Color(this.parameters.greyColor).g,
+                    b: new THREE.Color(this.parameters.greyColor).b,
+                    duration: duration / 2
+                });
             }
 
-            const parametersFolder = this.debugFolder.addFolder("Parameters");
-            parametersFolder
-                .add(this.parameters, "particleSize", 0, 100, 0.1)
-                .name("Particle Size")
-                .onChange((value) => {
-                    this.particles.forEach(({ material }) => {
-                        material.uniforms.uSize.value = value;
-                    });
+            await new Promise(resolve => setTimeout(resolve, this.parameters.greyDelay * 1000));
+            const newSystem = this.particles.get(category);
+            
+            if (!this.scene.children.includes(newSystem.points)) {
+                this.scene.add(newSystem.points);
+            }
+
+            gsap.to(newSystem.material.uniforms.uVisibleCount, {
+                value: this.categories[category].count,
+                duration,
+                ease: "power1.inOut"
+            });
+
+            const targetColor = new THREE.Color(this.categories[category].color);
+            gsap.to(newSystem.material.uniforms.uColor.value, {
+                r: targetColor.r,
+                g: targetColor.g,
+                b: targetColor.b,
+                duration
+            });
+
+            this.categoryHistory = [...new Set([...this.categoryHistory, category])];
+            this.activeCategory = category;
+        } else if (!visible && category === this.activeCategory) {
+            const system = this.particles.get(category);
+            await new Promise(resolve => {
+                gsap.to(system.material.uniforms.uVisibleCount, {
+                    value: 0,
+                    duration,
+                    ease: "power1.inOut",
+                    onComplete: () => {
+                        this.scene.remove(system.points);
+                        resolve();
+                    }
                 });
+            });
 
-            parametersFolder
-                .add(this.parameters, "speedMultiplier", 0, 0.02, 0.0001)
-                .name("Speed Multiplier");
-
-            parametersFolder
-                .add(this.parameters, "intensity", 0.01, 50, 0.1)
-                .name("FBM Intensity");
-
-            parametersFolder
-                .add(this.parameters, "areaSize", 0.1, 2, 0.01)
-                .name("Area Size")
-                .onChange(() => {
-                    this.createAllParticles();
+            this.categoryHistory = this.categoryHistory.filter(cat => cat !== category);
+            const previousCategory = this.categoryHistory[this.categoryHistory.length - 1];
+            
+            if (previousCategory) {
+                const prevSystem = this.particles.get(previousCategory);
+                const prevColor = new THREE.Color(this.categories[previousCategory].color);
+                gsap.to(prevSystem.material.uniforms.uColor.value, {
+                    r: prevColor.r,
+                    g: prevColor.g,
+                    b: prevColor.b,
+                    duration
                 });
-
-            parametersFolder
-                .add({ x: -0.075, y: 0, z: 0.11 }, 'x', -0.1, 0.1, 0.001)
-                .name('Position X')
-                .onChange((value) => {
-                    this.particles.forEach(({ points }) => {
-                        points.position.x = value;
-                    });
-                });
-
-            parametersFolder
-                .add({ x: -0.075, y: 0, z: 0.11 }, 'y', -1, 1, 0.001)
-                .name('Position Y')
-                .onChange((value) => {
-                    this.particles.forEach(({ points }) => {
-                        points.position.y = value;
-                    });
-                });
-
-            parametersFolder
-                .add({ x: -0.075, y: 0, z: 0.11 }, 'z', -0.1, .25, 0.001)
-                .name('Position Z')
-                .onChange((value) => {
-                    this.particles.forEach(({ points }) => {
-                        points.position.z = value;
-                    });
-                });
-
-
-
+            }
+            
+            this.activeCategory = previousCategory;
         }
+        this.isTransitioning = false;
+    }
+
+    setupDebug() {
+        if (!this.debug) return;
+
+        const gui = this.debug.gui.addFolder("Particulate Matter");
+        const categories = gui.addFolder("Categories");
+        
+        Object.entries(this.categories).forEach(([category, data]) => {
+            const folder = categories.addFolder(category);
+            folder.add(data, "visible").name("Visible").onChange(v => this.toggleCategory(category, v));
+            folder.addColor(data, "color").name("Color");
+            folder.add(data, "count").name("Particle Count").disable();
+        });
+
+        const params = gui.addFolder("Parameters");
+        const updates = {
+            particleSize: v => this.particles.forEach(({material}) => material.uniforms.uSize.value = v),
+            areaSize: () => this.createAllParticles(),
+            position: axis => v => this.particles.forEach(({points}) => points.position[axis] = v)
+        };
+
+        Object.entries(this.parameters).forEach(([key, value]) => {
+            if (updates[key]) {
+                params.add(this.parameters, key, 0, 100, 0.1).onChange(updates[key]);
+            }
+        });
+
+        ['x', 'y', 'z'].forEach(axis => {
+            params.add({[axis]: 0}, axis, -1, 1, 0.001).onChange(updates.position(axis));
+        });
     }
 
     resize() {
         const pixelRatio = Math.min(window.devicePixelRatio, 2);
-        this.particles.forEach(({ material }) => {
-            material.uniforms.uPixelRatio.value = pixelRatio;
-        });
+        this.particles.forEach(({material}) => material.uniforms.uPixelRatio.value = pixelRatio);
     }
 
     update() {
-        const TIME_WRAP = 50;
-        const elapsedTime = (this.time.elapsed * this.parameters.speedMultiplier) % TIME_WRAP;
-        const wrappedTime =
-            elapsedTime > TIME_WRAP / 2 ? TIME_WRAP - elapsedTime : elapsedTime;
-
-        this.particles.forEach(({ material }) => {
-            material.uniforms.uTime.value = wrappedTime;
-        });
+        const elapsedTime = (this.time.elapsed * this.parameters.speedMultiplier) % 50;
+        const wrappedTime = elapsedTime > 25 ? 50 - elapsedTime : elapsedTime;
+        this.particles.forEach(({material}) => material.uniforms.uTime.value = wrappedTime);
     }
 }
