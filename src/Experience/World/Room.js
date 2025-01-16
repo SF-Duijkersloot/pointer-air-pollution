@@ -32,7 +32,7 @@ export default class World {
         // curtains.material.opacity = 0.7
 
         this.scene.add(this.roomScene)
-        this.roomScene.scale.set(0.4, 0.4, 0.4)
+        this.roomScene.scale.set(0.5, 0.5, 0.5)
         // this.roomScene.position.y = -.5
     }
 

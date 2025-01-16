@@ -2,6 +2,6 @@ export default [
     {
         name: 'room',
         type: 'glbModel',
-        path: '/models/isometricRoom_empty.glb',
+        path: '/models/isometricGarden_1.glb',
     },
 ]
