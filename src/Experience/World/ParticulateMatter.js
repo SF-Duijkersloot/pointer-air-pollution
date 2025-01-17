@@ -15,7 +15,7 @@ export default class ParticulateMatter {
             speedMultiplier: 0.003,
             intensity: 1,
             particleSize: 6,
-            areaSize: 1.75,
+            areaSize: 1.93,
             greyDelay: 1,
             greyColor: "#d1d1d1",
         };
@@ -45,9 +45,9 @@ export default class ParticulateMatter {
 
         for (let i = 0; i < count; i++) {
             const i3 = i * 3;
-            positionArray[i3] = (Math.random() - 0.5) * 1.8;
-            positionArray[i3 + 1] = Math.random() * 1.85;
-            positionArray[i3 + 2] = (Math.random() - 0.5) * 1.8;
+            positionArray[i3] = (Math.random() - 0.5) * this.parameters.areaSize;
+            positionArray[i3 + 1] = Math.random() * 1.7;
+            positionArray[i3 + 2] = (Math.random() - 0.5) * this.parameters.areaSize;
             scaleArray[i] = Math.random() * 0.9 + 0.1;
         }
 
@@ -70,7 +70,7 @@ export default class ParticulateMatter {
         });
 
         const points = new THREE.Points(geometry, material);
-        points.position.set(0.037, 0, 0.235);
+        points.position.set(-0.02, 0.15, 0.04);
         points.rotateY(Math.PI / 4);
         
         return { geometry, material, points };

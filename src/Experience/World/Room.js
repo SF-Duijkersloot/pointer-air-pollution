@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import Experience from '../Experience.js'
-import { vec3 } from 'three/tsl'
 
 export default class World {
     constructor() {

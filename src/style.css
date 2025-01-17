@@ -1,53 +1,143 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Variable styling */
+:root {
+	--
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Font faces */
+@font-face {
+    font-family: "Formula Condensed Light";
+    font-style: normal;
+    font-weight: normal;
+	src: url("/fonts/FormulaCondensed-Light.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Formula Condensed Bold";
+    font-style: normal;
+    font-weight: normal;
+	src: url("/fonts/FormulaCondensed-Bold.woff") format("woff");
+}
+
+
+/************ Hero styling ************/
+header {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	background: var(--Hero---gradient, linear-gradient(295deg, #28006D 18.37%, #4D00FF 124.2%));
+}
+
+header h1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: Inter;
+	font-size: 2.5vw;
+	color: white;
+}
+
+header span.bold-titel {
+	font-family: Formula Condensed Bold;
+	font-size: 15vw;
+}
+
+
+
+/************ Sections styling ************/
+/* Intro section */
+.intro-section {
+	height: 100vh;
+	gap: 3em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.intro-section p {
+	font-family: Inter;
+	font-size: 1.5vw;
+	width: 50%;
+}
+
+
+/* Impact sections */
+.impact-section {
+	height: 100vh;
+    gap: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.impact-section h2 {
+	font-family: Formula Condensed Bold;
+    font-size: 25vw;
+}
+
+.impact-section p {
+	font-family: Inter;
+    font-size: 1.5vw;
+    width: 50%;
+}
+
+.impact-section.medal h2 {
+	font-size: 10vw;
+}
+
+.impact-section.medal span {
+	font-family: Formula Condensed Bold;
+	font-size: 2vw;
+}
+
+
+
+
+
 .experience {
-  position: sticky;
-  top: 0;
-  width: 100vh;
-  height: 100vh;
+    position: sticky;
+    top: 0;
+    width: 100vh;
+    height: 100vh;
 }
 
 .experience-canvas {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .experience-wrapper {
-  height: 300vh;
-  position: relative;
+    height: 300vh;
+    position: relative;
 }
 
 .side-bar-wrapper {
-  position: absolute;
-  height: 300vh;
-  width: 30%;
-  z-index: 10;
+    position: absolute;
+    height: 300vh;
+    width: 30%;
+    z-index: 10;
 }
 
 .side-bar-content {
-  position: sticky;
-  top: 0;
-  background-color: #2c2c2c;
-  color: white;
-}
-
-
-
-header {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: #2c2c2c;
+    color: white;
 }
 
 footer {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
 }
