@@ -1,6 +1,101 @@
-/* Variable styling */
+/*************************************
+            Variable styles            
+/*************************************/
 :root {
-	--
+    /* Color styles */
+    --color-white: rgba(255, 255, 255, 1);
+    --color-beige: rgba(248, 245, 242, 1);
+    --color-dark-green: rgba(42, 55, 0, 1);
+    --color-medium-green: rgba(222, 255, 156, 1);
+    --color-light-green: rgba(239, 255, 226, 1);
+    --color-dark-turquoise: rgba(10, 20, 15, 1);
+    --color-medium-turquoise: rgba(0, 217, 173, 1);
+    --color-light-turquoise: rgba(203, 255, 230, 1);
+    --color-dark-purple: rgba(40, 0, 109, 1);
+    --color-medium-purple: rgba(77, 0, 255, 1);
+    --color-light-purple: rgba(213, 218, 255, 1);
+    --color-dark-pink: rgba(174, 129, 158, 1);
+    --color-medium-pink: rgba(255, 83, 98, 1);
+    --color-light-pink: rgba(255, 196, 204, 1);
+    --color-lightest-green: rgba(250, 255, 240, 1);
+    --color-lightest-turquoise: rgba(248, 255, 248, 1);
+    --color-lightest-purple: rgba(248, 248, 255, 1);
+    --color-lightest-pink: rgba(255, 234, 246, 1);
+    --color-dark-gray: rgba(108, 108, 108, 1);
+    --color-white: rgba(255, 255, 255, 1);
+    --color-light-gray: rgba(223, 223, 223, 1);
+
+    --hero-gradient: linear-gradient(
+        295deg,
+        var(--color-dark-purple) 18.37%,
+        var(--color-medium-purple) 124.2%
+    );
+
+    /* Fonts fluid size */
+    /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1500,22,1.333,8,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+    /* Step -2: 11.1111px → 18.009px */
+    --size--2: clamp(0.6944rem, 0.6123rem + 0.4106vw, 1.1256rem);
+    /* Step -1: 13.3333px → 24.006px */
+    --size--1: clamp(0.8333rem, 0.7063rem + 0.6353vw, 1.5004rem);
+    /* Step 0: 16px → 32px */
+    --size-0: clamp(1rem, 0.8095rem + 0.9524vw, 2rem);
+    /* Step 1: 19.2px → 42.656px */
+    --size-1: clamp(1.2rem, 0.9208rem + 1.3962vw, 2.666rem);
+    /* Step 2: 23.04px → 56.8604px */
+    --size-2: clamp(1.44rem, 1.0374rem + 2.0131vw, 3.5538rem);
+    /* Step 3: 27.648px → 75.795px */
+    --size-3: clamp(1.728rem, 1.1548rem + 2.8659vw, 4.7372rem);
+    /* Step 4: 33.1776px → 101.0347px */
+    --size-4: clamp(2.0736rem, 1.2658rem + 4.0391vw, 6.3147rem);
+    /* Step 5: 39.8131px → 134.6793px */
+    --size-5: clamp(2.4883rem, 1.359rem + 5.6468vw, 8.4175rem);
+    /* Step 6: 47.7757px → 179.5275px */
+    --size-6: clamp(2.986rem, 1.4175rem + 7.8424vw, 11.2205rem);
+    /* Step 7: 57.3309px → 239.3101px */
+    --size-7: clamp(3.5832rem, 1.4168rem + 10.8321vw, 14.9569rem);
+    /* Step 8: 68.7971px → 319.0004px */
+    --size-8: clamp(4.2998rem, 1.3212rem + 14.8931vw, 19.9375rem);
+
+    /* Fluid spacing */
+    /* @link https://utopia.fyi/space/calculator?c=320,16,1.2,1500,20,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+    /* Space 3xs: 4px → 5px */
+    --space-3xs: clamp(0.25rem, 0.2331rem + 0.0847vw, 0.3125rem);
+    /* Space 2xs: 8px → 10px */
+    --space-2xs: clamp(0.5rem, 0.4661rem + 0.1695vw, 0.625rem);
+    /* Space xs: 12px → 15px */
+    --space-xs: clamp(0.75rem, 0.6992rem + 0.2542vw, 0.9375rem);
+    /* Space s: 16px → 20px */
+    --space-s: clamp(1rem, 0.9322rem + 0.339vw, 1.25rem);
+    /* Space m: 24px → 30px */
+    --space-m: clamp(1.5rem, 1.3983rem + 0.5085vw, 1.875rem);
+    /* Space l: 32px → 40px */
+    --space-l: clamp(2rem, 1.8644rem + 0.678vw, 2.5rem);
+    /* Space xl: 48px → 60px */
+    --space-xl: clamp(3rem, 2.7966rem + 1.0169vw, 3.75rem);
+    /* Space 2xl: 64px → 80px */
+    --space-2xl: clamp(4rem, 3.7288rem + 1.3559vw, 5rem);
+    /* Space 3xl: 96px → 120px */
+    --space-3xl: clamp(6rem, 5.5932rem + 2.0339vw, 7.5rem);
+
+    /* One-up pairs */
+    /* Space 3xs-2xs: 4px → 10px */
+    --space-3xs-2xs: clamp(0.25rem, 0.1483rem + 0.5085vw, 0.625rem);
+    /* Space 2xs-xs: 8px → 15px */
+    --space-2xs-xs: clamp(0.5rem, 0.3814rem + 0.5932vw, 0.9375rem);
+    /* Space xs-s: 12px → 20px */
+    --space-xs-s: clamp(0.75rem, 0.6144rem + 0.678vw, 1.25rem);
+    /* Space s-m: 16px → 30px */
+    --space-s-m: clamp(1rem, 0.7627rem + 1.1864vw, 1.875rem);
+    /* Space m-l: 24px → 40px */
+    --space-m-l: clamp(1.5rem, 1.2288rem + 1.3559vw, 2.5rem);
+    /* Space l-xl: 32px → 60px */
+    --space-l-xl: clamp(2rem, 1.5254rem + 2.3729vw, 3.75rem);
+    /* Space xl-2xl: 48px → 80px */
+    --space-xl-2xl: clamp(3rem, 2.4576rem + 2.7119vw, 5rem);
+    /* Space 2xl-3xl: 64px → 120px */
+    --space-2xl-3xl: clamp(4rem, 3.0508rem + 4.7458vw, 7.5rem);
 }
 
 * {
@@ -9,100 +104,372 @@
     box-sizing: border-box;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Formula Condensed Bold;
+}
+
+p {
+    font-family: Inter;
+}
+
 /* Font faces */
 @font-face {
     font-family: "Formula Condensed Light";
     font-style: normal;
     font-weight: normal;
-	src: url("/fonts/FormulaCondensed-Light.woff") format("woff");
+    src: url("/fonts/FormulaCondensed-Light.woff") format("woff");
 }
 
 @font-face {
     font-family: "Formula Condensed Bold";
     font-style: normal;
     font-weight: normal;
-	src: url("/fonts/FormulaCondensed-Bold.woff") format("woff");
+    src: url("/fonts/FormulaCondensed-Bold.woff") format("woff");
 }
 
-
-/************ Hero styling ************/
+/* Placeholder navigation */
 header {
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.75em 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-	background: var(--Hero---gradient, linear-gradient(295deg, #28006D 18.37%, #4D00FF 124.2%));
+    background: var(--color-white);
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
 
-header h1 {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: Inter;
-	font-size: 2.5vw;
-	color: white;
+header > img:first-of-type {
+    margin-left: var(--space-2xs);
 }
 
-header span.bold-titel {
-	font-family: Formula Condensed Bold;
-	font-size: 15vw;
+header > div {
+    display: flex;
+    gap: var(--space-s);
+    margin-right: var(--space-2xs);
 }
 
-
-
-/************ Sections styling ************/
-/* Intro section */
-.intro-section {
-	height: 100vh;
-	gap: 3em;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+header > div > div {
+    display: flex;
+    gap: 1em;
+    font-size: 16px;
+    padding: 13px 24px;
+    background-color: var(--color-medium-green);
+    border-radius: 999px;
 }
 
-.intro-section p {
-	font-family: Inter;
-	font-size: 1.5vw;
-	width: 50%;
+/*************************************
+            Hero Styling           
+/*************************************/
+.hero-section {
+    height: 350vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--hero-gradient);
 }
 
-
-/* Impact sections */
-.impact-section {
-	height: 100vh;
-    gap: 3em;
+.hero-section h1 {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    font-family: Inter;
+    font-size: var(--size-1);
+    font-weight: 400;
+    color: white;
+    z-index: 10;
+}
+
+.hero-section span.bold-titel {
+    font-family: Formula Condensed Bold;
+    font-size: var(--size-7);
+}
+
+.hero-section .underline {
+    transform: translate(0, 70%);
+    width: 45vw;
+}
+
+/************ Hero Background Styling ************/
+.hero-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.foreground,
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+.background {
+    z-index: 0;
+}
+
+/************ Particles Placement ************/
+.hero-wrapper svg {
+    position: absolute;
+}
+
+.foreground svg:nth-of-type(1) {
+    width: 17vw;
+    height: 17vw;
+    bottom: 0;
+    left: 2%;
+    transform: translate(0, 25%);
+}
+
+.foreground svg:nth-of-type(2) {
+    width: 12vw;
+    height: 12vw;
+    top: 21%;
+    left: 4%;
+}
+
+.foreground svg:nth-of-type(3) {
+    width: 7vw;
+    height: 7vw;
+    bottom: 30%;
+    left: 13%;
+}
+
+.foreground svg:nth-of-type(4) {
+    width: 10vw;
+    height: 10vw;
+    top: 6em;
+    left: 37%;
+}
+
+.foreground svg:nth-of-type(5) {
+    width: 5vw;
+    height: 5vw;
+    top: 20%;
+    right: 21%;
+}
+
+.foreground svg:nth-of-type(6) {
+    width: 8vw;
+    height: 8vw;
+    top: 50%;
+    right: 21%;
+}
+
+.foreground svg:nth-of-type(7) {
+    width: 6.5vw;
+    height: 6.5vw;
+    bottom: 11%;
+    right: 30%;
+}
+
+.foreground svg:nth-of-type(8) {
+    width: 18.5vw;
+    height: 18.5vw;
+    top: 12%;
+    right: 0;
+    transform: translate(35%, 0);
+}
+
+/* Background particles */
+.background svg:nth-of-type(1) {
+    width: 4.25vw;
+    height: 4.25vw;
+    bottom: 34%;
+    left: 2%;
+}
+
+.background svg:nth-of-type(2) {
+    width: 3vw;
+    height: 3vw;
+    top: 27%;
+    left: 30%;
+}
+
+.background svg:nth-of-type(3) {
+    width: 5.25vw;
+    height: 5.25vw;
+    bottom: 7%;
+    left: 39%;
+}
+
+.background svg:nth-of-type(4) {
+    width: 4.5vw;
+    height: 4.5vw;
+    top: 16%;
+    right: 43%;
+}
+
+.background svg:nth-of-type(5) {
+    width: 7.5vw;
+    height: 7.5vw;
+    top: 23%;
+    right: 23%;
+}
+
+.background svg:nth-of-type(6) {
+    width: 8vw;
+    height: 8vw;
+    bottom: 7%;
+    right: 5%;
+}
+
+/*************************************
+            Magnifying Intro           
+/*************************************/
+
+.magnifying-glass {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    transform: translate(150%, 10%) scale(1) rotate(300deg);
+}
+/* 
+.intro-section:hover .magnifying-glass {
+    animation: magnifying-glass 2s ease-in-out forwards;
+}
+
+.intro-section:hover .magnifying-glass .white-filler {
+    animation: filler-opacity 2s ease-in-out forwards;
+}
+
+.intro-section .text-wrapper {
+    opacity: 1;
+    z-index: 100;
+}
+
+.intro-section:hover .text-wrapper {
+    animation: text-opacity 2s ease-in-out forwards;
+}
+
+.intro-section:hover {
+    animation: opacity-delay 4s ease-in-out forwards;
+} */
+
+.magnifying-glass .white-filler {
+    position: absolute;
+    top: 7%;
+    left: 9%;
+    width: 80%;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    background-color: var(--color-beige);
+}
+
+.magnifying-glass img {
+    width: 25vw;
+    height: auto;
+    position: relative;
+    z-index: 2;
+}
+
+/************ Intro Content ************/
+.sticky-wrapper {
+    position: relative;
+    height: 250vh;
+    width: 100%;
+    border: 5px solid red;
+}
+
+.intro-section {
+    border: 1px solid green;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    gap: var(--space-s);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--color-beige);
+    /* opacity: 1; */
+    z-index: 10;
+}
+
+.intro-section p {
+    font-size: var(--size-0);
+}
+
+/*************************************
+          Sections Styling           
+/*************************************/
+/* Impact sections */
+.impact-section {
+    height: 100vh;
+    gap: var(--space-s);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* border: 1px solid red; */
 }
 
 .impact-section h2 {
-	font-family: Formula Condensed Bold;
-    font-size: 25vw;
+    font-size: 35vw;
+    font-weight: 900;
+}
+
+.impact-section:nth-of-type(2) h2 {
+    font-size: calc(var(--size-8) * 1.5);
+}
+
+.impact-section:nth-of-type(3) h2 {
+    font-size: calc(var(--size-8) * 2);
 }
 
 .impact-section p {
-	font-family: Inter;
-    font-size: 1.5vw;
-    width: 50%;
+    font-family: Inter;
+    font-size: var(--size-0);
 }
 
-.impact-section.medal h2 {
-	font-size: 10vw;
+.text-wrapper {
+    gap: var(--space-s);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 60vw;
+    /* border: 1px solid red; */
 }
 
-.impact-section.medal span {
-	font-family: Formula Condensed Bold;
-	font-size: 2vw;
+/************ Media Query ************/
+@media (max-width: 1000px) {
+    .impact-section h2 {
+        font-size: 40vw;
+    }
+
+    .impact-section .text-wrapper {
+        max-width: 75vw;
+    }
 }
 
+@media (max-width: 690px) {
+    .impact-section h2 {
+        font-size: 50vw;
+    }
 
+    .impact-section .text-wrapper {
+        max-width: 90vw;
+    }
+}
 
-
-
+/*************************************
+            3D Room Styling        
+/*************************************/
 .experience {
     position: sticky;
     top: 0;
@@ -120,6 +487,7 @@ header span.bold-titel {
     position: relative;
 }
 
+/************ Sidebar Styling ************/
 .side-bar-wrapper {
     position: absolute;
     height: 300vh;
@@ -132,6 +500,49 @@ header span.bold-titel {
     top: 0;
     background-color: #2c2c2c;
     color: white;
+}
+
+/*************************************
+              Keyframes            
+/*************************************/
+
+@keyframes magnifying-glass {
+    0% {
+        transform: translate(150%, 10%) scale(1) rotate(300deg);
+    }
+    50% {
+        transform: translate(-115%, 10%) scale(1) rotate(330deg);
+    }
+    100% {
+        transform: translate(-25%, 160%) scale(7.5) rotate(340deg);
+    }
+}
+
+@keyframes filler-opacity {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes text-opacity {
+    0% {
+        opacity: 0;
+        scale: 0.5;
+    }
+    60% {
+        opacity: 0;
+        scale: 0.5;
+    }
+    100% {
+        opacity: 1;
+        scale: 1;
+    }
 }
 
 footer {
