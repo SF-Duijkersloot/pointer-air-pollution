@@ -119,17 +119,17 @@ p {
 
 /* Font faces */
 @font-face {
-    font-family: "Formula Condensed Light";
+    font-family: 'Formula Condensed Light';
     font-style: normal;
     font-weight: normal;
-    src: url("/fonts/FormulaCondensed-Light.woff") format("woff");
+    src: url('/fonts/FormulaCondensed-Light.woff') format('woff');
 }
 
 @font-face {
-    font-family: "Formula Condensed Bold";
+    font-family: 'Formula Condensed Bold';
     font-style: normal;
     font-weight: normal;
-    src: url("/fonts/FormulaCondensed-Bold.woff") format("woff");
+    src: url('/fonts/FormulaCondensed-Bold.woff') format('woff');
 }
 
 /* Placeholder navigation */
@@ -170,7 +170,7 @@ header > div > div {
             Hero Styling           
 /*************************************/
 .hero-section {
-    height: 350vh;
+    height: 300vh;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -337,22 +337,23 @@ header > div > div {
     bottom: 0;
     z-index: 100;
     transform: translate(150%, 10%) scale(1) rotate(300deg);
+    /* opacity: 0.1; */
 }
-/* 
-.intro-section:hover .magnifying-glass {
+
+/* .intro-section:hover .magnifying-glass {
     animation: magnifying-glass 2s ease-in-out forwards;
 }
 
 .intro-section:hover .magnifying-glass .white-filler {
     animation: filler-opacity 2s ease-in-out forwards;
-}
+} */
 
 .intro-section .text-wrapper {
-    opacity: 1;
+    opacity: 0;
     z-index: 100;
 }
 
-.intro-section:hover .text-wrapper {
+/* .intro-section:hover .text-wrapper {
     animation: text-opacity 2s ease-in-out forwards;
 }
 
@@ -380,13 +381,13 @@ header > div > div {
 /************ Intro Content ************/
 .sticky-wrapper {
     position: relative;
-    height: 250vh;
+    height: 200vh;
     width: 100%;
-    border: 5px solid red;
+    /* border: 5px solid red; */
 }
 
 .intro-section {
-    border: 1px solid green;
+    /* border: 1px solid green; */
     position: sticky;
     top: 0;
     height: 100vh;
@@ -396,7 +397,7 @@ header > div > div {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: var(--color-beige);
+    /* background-color: var(--color-beige); */
     /* opacity: 1; */
     z-index: 10;
 }
@@ -416,20 +417,24 @@ header > div > div {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-top: 20vh;
     /* border: 1px solid red; */
 }
 
 .impact-section h2 {
     font-size: 35vw;
-    font-weight: 900;
+    line-height: 1;
+    color: var(--color-dark-purple);
 }
 
 .impact-section:nth-of-type(2) h2 {
     font-size: calc(var(--size-8) * 1.5);
+    line-height: normal;
 }
 
 .impact-section:nth-of-type(3) h2 {
     font-size: calc(var(--size-8) * 2);
+    line-height: normal;
 }
 
 .impact-section p {

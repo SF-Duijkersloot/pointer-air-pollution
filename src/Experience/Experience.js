@@ -10,6 +10,7 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 
 import World from './World/World.js'
+import Animations from './Animations.js'
 
 export default class Experience {
     static instance
@@ -31,6 +32,7 @@ export default class Experience {
         this.renderer = new Renderer()
         this.resources = new Resources(assets)
         this.world = new World()
+        this.animations = new Animations()
 
         this.sizes.on('resize', () => {
             this.resize()
