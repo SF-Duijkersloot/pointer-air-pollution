@@ -13,9 +13,12 @@ export default class Animations {
             '.impact-section.percentage'
         )
         this.percentageHeader = this.percentageSection.querySelector('h2 span')
+        this.iconGrid = document.querySelector('.icon-grid')
 
         this.createTimeline()
         this.countPercentage()
+        this.instanceIconGrid()
+        this.gridAnimation()
     }
 
     createTimeline() {
@@ -93,34 +96,12 @@ export default class Animations {
             )
     }
 
-    // setIntersectionObserver() {
-    //     console.log('Setting IntersectionObserver for percentage header')
-    //     const observer = new IntersectionObserver((entries) => {
-    //         entries.forEach((entry) => {
-    //             console.log(entry)
-    //             if (entry.isIntersecting) {
-
-    //                 console.log('Percentage header is visible')
-    //                 this.countPercentage()
-    //                 observer.unobserve(entry.target) // Stop observing once triggered
-    //             }
-    //         })
-    //     }, {
-    //         threshold: 0.5, // Trigger when 50% of the element is visible
-    //         // rootMargin: '0px 0px -50% 0px',
-    //     })
-
-    //     // Observe the percentageHeader element
-    //     observer.observe(this.percentageSection)
-    // }
-
     countPercentage() {
         // set observer
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        console.log('Percentage header is visible')
                         const targerPercentage = 100
                         const increment = 5
                         const duration = 2000
@@ -145,11 +126,84 @@ export default class Animations {
             },
             {
                 threshold: 0.5, // Trigger when 50% of the element is visible
-                // rootMargin: '0px 0px -50% 0px',
             }
         )
 
         // Observe the percentageHeader element
         observer.observe(this.percentageSection)
+    }
+
+    instanceIconGrid() {
+        const gridContainer = document.querySelector('.icon-grid')
+        const rows = 6
+        const columns = 18
+        const highlightIndices = [
+            0, 3, 9, 10, 13, 25, 35, 36, 41, 46, 51, 54, 57, 63, 64, 67, 79, 89,
+            90, 95, 100, 105,
+        ] // Highlight these icons
+
+        // Create 18 icons using the symbol reference
+        for (let i = 0; i < rows * columns; i++) {
+            const svg = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'svg'
+            )
+            svg.setAttribute('class', 'icon')
+
+            const use = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'use'
+            )
+            use.setAttribute('href', '#person') // Use the symbol ID directly
+
+            svg.appendChild(use)
+
+            // Check if the index i is in the list of highlight indices
+            if (highlightIndices.includes(i)) {
+                svg.classList.add('target')
+            }
+
+            gridContainer.appendChild(svg)
+        }
+    }
+
+    gridAnimation() {
+        const targetIcons = this.iconGrid.querySelectorAll('.icon.target')
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        observer.unobserve(entry.target)
+
+                        // Randomly shuffle targetIcons array
+                        const iconsArray = Array.from(targetIcons)
+                        this.shuffleArray(iconsArray)
+
+                        const delay = 1500 / iconsArray.length
+
+                        // Add the '.active' class to each icon with a delay
+                        iconsArray.forEach((icon, index) => {
+                            setTimeout(() => {
+                                icon.classList.add('active')
+                            }, index * delay) // Delay each by 200ms for staggered effect
+                        })
+                    }
+                })
+            },
+            {
+                threshold: 0.5, // Trigger when 50% of the element is visible
+            }
+        )
+
+        // Observe the iconGrid element
+        observer.observe(this.iconGrid)
+    }
+    // Helper function to shuffle the array
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[array[i], array[j]] = [array[j], array[i]] // Swap elements
+        }
     }
 }

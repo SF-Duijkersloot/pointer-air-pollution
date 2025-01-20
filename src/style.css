@@ -222,6 +222,14 @@ header > div > div {
 }
 
 /************ Particles Placement ************/
+svg.hidden {
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    right: -100%;
+}
+
 .hero-wrapper svg {
     position: absolute;
 }
@@ -427,10 +435,29 @@ header > div > div {
     color: var(--color-dark-purple);
 }
 
-.impact-section:nth-of-type(2) h2 {
+/************ 1 op 5 icon styling ************/
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: var(--space-2xs);
+    max-width: 60vw;
+    margin-bottom: var(--space-m);
+}
+
+.icon {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    fill: var(--color-light-purple);
+}
+
+.icon.target.active {
+    fill: var(--color-dark-purple);
+}
+
+/* .impact-section:nth-of-type(2) h2 {
     font-size: calc(var(--size-8) * 1.5);
     line-height: normal;
-}
+} */
 
 .impact-section:nth-of-type(3) h2 {
     font-size: calc(var(--size-8) * 2);
