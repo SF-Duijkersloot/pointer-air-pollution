@@ -454,19 +454,11 @@ svg.hidden {
     fill: var(--color-dark-purple);
 }
 
-/* .impact-section:nth-of-type(2) h2 {
-    font-size: calc(var(--size-8) * 1.5);
-    line-height: normal;
-} */
-
-.impact-section:nth-of-type(3) h2 {
-    font-size: calc(var(--size-8) * 2);
-    line-height: normal;
-}
-
 .impact-section p {
     font-family: Inter;
     font-size: var(--size-0);
+    line-height: 136%;
+    font-weight: 300;
 }
 
 .text-wrapper {
@@ -479,6 +471,7 @@ svg.hidden {
 }
 
 /************ Media Query ************/
+
 @media (max-width: 1000px) {
     .impact-section h2 {
         font-size: 40vw;
@@ -497,6 +490,95 @@ svg.hidden {
     .impact-section .text-wrapper {
         max-width: 90vw;
     }
+}
+
+/************ Bar chart ************/
+.impact-section.bar-chart {
+    height: 300vh;
+    gap: 0;
+    justify-content: start;
+}
+
+.bar-container {
+    height: 200vh;
+    width: 100%;
+    display: flex;
+    gap: var(--space-s);
+    justify-content: space-around;
+    flex-direction: row-reverse;
+    align-items: end;
+}
+
+.bar {
+    height: 100%;
+    width: 20%;
+    border-radius: 0.75vw 0.75vw 0 0;
+    background-color: var(--color-light-purple);
+}
+
+.bar:first-of-type {
+    background-color: var(--color-dark-purple);
+    color: var(--color-beige);
+}
+
+.bar-content p {
+    margin-top: var(--space-m);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    font-size: var(--size--1);
+}
+
+.bar-content span {
+    display: block;
+    font-family: Formula Condensed Bold;
+    font-size: var(--size-4);
+    line-height: 1;
+    color: var(--color-dark-purple);
+}
+
+.bar:first-of-type span {
+    color: var(--color-beige);
+}
+
+/* Bar relative heights */
+.bar:nth-of-type(1) {
+    height: 100%;
+}
+
+.bar:nth-of-type(2) {
+    height: 41.66%;
+}
+
+.bar:nth-of-type(3) {
+    height: 6.21%;
+}
+
+.bar:nth-of-type(4) {
+    height: 1.16%;
+}
+
+/* Fullscreen text styling */
+.explanation-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--color-dark-purple);
+    color: var(--color-beige);
+    /* border: 1px solid red; */
+}
+
+.explanation-wrapper h2 {
+    font-size: 27.5vw;
+    color: var(--color-beige);
+}
+
+.explanation-wrapper a {
+    color: var(--color-light-purple);
 }
 
 /*************************************
