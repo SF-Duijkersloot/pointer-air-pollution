@@ -25,6 +25,11 @@
     --color-white: rgba(255, 255, 255, 1);
     --color-light-gray: rgba(223, 223, 223, 1);
 
+    --particle-aubergine: rgba(152, 0, 94, 1);
+    --particle-green: rgba(9, 181, 146, 1);
+    --particle-yellow: rgba(254, 208, 0, 1);
+    --particle-orange: rgba(255, 130, 5, 1);
+
     --hero-gradient: linear-gradient(
         295deg,
         var(--color-dark-purple) 18.37%,
@@ -458,7 +463,6 @@ svg.hidden {
     font-family: Inter;
     font-size: var(--size-0);
     line-height: 136%;
-    font-weight: 300;
 }
 
 .text-wrapper {
@@ -468,6 +472,12 @@ svg.hidden {
     flex-direction: column;
     max-width: 60vw;
     /* border: 1px solid red; */
+}
+
+.one-in-five span {
+    font-family: Formula Condensed Bold;
+    font-size: var(--size-1);
+    color: var(--color-dark-purple);
 }
 
 /************ Media Query ************/
@@ -577,6 +587,10 @@ svg.hidden {
     color: var(--color-beige);
 }
 
+.explanation-wrapper p {
+    font-weight: 300;
+}
+
 .explanation-wrapper a {
     color: var(--color-light-purple);
 }
@@ -597,23 +611,159 @@ svg.hidden {
 }
 
 .experience-wrapper {
-    height: 300vh;
+    height: 700vh;
     position: relative;
 }
 
 /************ Sidebar Styling ************/
 .side-bar-wrapper {
+    display: flex;
     position: absolute;
-    height: 300vh;
-    width: 30%;
+    height: 100%;
+    width: 40%;
     z-index: 10;
+    /* background-color: #c5c5c5; */
 }
 
 .side-bar-content {
+    margin-top: 25vh;
+    display: flex;
+    flex-direction: column;
+    gap: 35vh;
+    width: 82.5%;
+}
+
+.category-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+}
+
+.category-container h3 {
+    font-size: var(--size-3);
+}
+
+.category-container p {
+    font-size: var(--size-0);
+    line-height: 136%;
+}
+
+p.category-subtext {
+    font-size: var(--size--1);
+    font-style: italic;
+}
+
+p.emission-number {
+    margin-top: var(--space-s);
+    font-size: var(--size-1);
+}
+
+/* Percentage Bar */
+.percentage-bar {
+    display: flex;
+    width: 100%;
+    height: 4em;
+    border-radius: 0.25vw;
+    background-color: #e1e1e1;
+}
+
+.percentage-fill {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 100%;
+}
+
+.percentage-fill p {
+    font-size: var(--size--1);
+    font-weight: 500;
+    text-align: center;
+    transform: translateY(125%);
+}
+
+/* Specific Category Stlying */
+/* Bouw */
+.category-container.bouw h3 {
+    color: var(--color-medium-purple);
+}
+.percentage-fill.bouw {
+    width: 4.7%;
+    background-color: var(--color-medium-purple);
+}
+
+/* Landbouw */
+.category-container.landbouw h3 {
+    color: var(--color-medium-pink);
+}
+.percentage-fill.landbouw {
+    width: 13.3%;
+    background-color: var(--color-medium-pink);
+}
+
+/* Industrie */
+.category-container.industrie h3 {
+    color: var(--particle-aubergine);
+}
+.percentage-fill.industrie {
+    width: 17%;
+    background-color: var(--particle-aubergine);
+}
+
+/* Consumenten */
+.category-container.consumenten h3 {
+    color: var(--particle-green);
+}
+.percentage-fill.consumenten {
+    width: 28.6%;
+    background-color: var(--particle-green);
+}
+
+/* Verkeer */
+.category-container.verkeer h3 {
+    color: var(--particle-yellow);
+}
+.percentage-fill.verkeer {
+    width: 30.2%;
+    background-color: var(--particle-yellow);
+}
+
+/* Overig */
+.category-container.overig h3 {
+    color: var(--particle-orange);
+}
+.percentage-fill.overig {
+    width: 6.2%;
+    background-color: var(--particle-orange);
+}
+
+/* Totaal */
+.category-container.totaal h3 {
+    color: var(--color-dark-purple);
+}
+
+/************ Progress Indicator ************/
+.progress-indicator {
     position: sticky;
     top: 0;
-    background-color: #2c2c2c;
-    color: white;
+    width: 17.5%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.progress-circle {
+    width: 1em;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    border: 1px solid #0e0e0e;
+}
+
+.progress-circle.active {
+    background-color: #0e0e0e;
 }
 
 /*************************************
@@ -660,9 +810,18 @@ svg.hidden {
 }
 
 footer {
-    height: 100vh;
+    height: 110vh;
+    padding-top: 10vh;
+    border-radius: 2vw 2vw 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2vw;
+    font-size: var(--size-0);
+    font-weight: 300;
+    background-color: var(--color-dark-purple);
+    color: var(--color-beige);
+}
+
+footer .text-wrapper {
+    gap: var(--space-l);
 }
