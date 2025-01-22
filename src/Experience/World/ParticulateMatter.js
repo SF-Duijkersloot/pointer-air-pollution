@@ -15,7 +15,7 @@ export default class ParticulateMatter {
         this.parameters = {
             speedMultiplier: 0.005,
             intensity: 1,
-            particleSize: 8,
+            particleSize: 7,
             areaSize: 3.95,
             greyDelay: 1,
             greyColor: '#d1d1d1',
@@ -24,37 +24,37 @@ export default class ParticulateMatter {
         this.categories = {
             bouw: {
                 count: 1530,
-                color: '#4D00FF',
+                color: '#fed000',
                 visible: false,
                 active: false,
             },
             landbouw: {
                 count: 1598,
-                color: '#FF5362',
+                color: '#ff8205',
                 visible: false,
                 active: false,
             },
             industrie: {
                 count: 7035,
-                color: '#98005E',
+                color: '#ff5362',
                 visible: false,
                 active: false,
             },
             consumenten: {
                 count: 16264,
-                color: '#09B592',
+                color: '#98005e',
                 visible: false,
                 active: false,
             },
             verkeer: {
                 count: 15063,
-                color: '#FED000',
+                color: '#09b592',
                 visible: false,
                 active: false,
             },
             overig: {
                 count: 3360,
-                color: '#FF8205',
+                color: '#2a3700',
                 visible: false,
                 active: false,
             },
