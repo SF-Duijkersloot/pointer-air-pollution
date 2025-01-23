@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import Experience from '../Experience'
-import { color } from 'three/tsl'
 
 export default class Floor {
     constructor() {
@@ -13,16 +12,14 @@ export default class Floor {
         }
 
         this.setFloor()
-        this.setDebug()
+        if (this.debug.active) this.setDebug()
     }
 
     setFloor() {
         this.geometry = new THREE.PlaneGeometry(100, 100, 1, 1)
         this.material = new THREE.MeshStandardMaterial({
             color: new THREE.Color(this.parameters.color),
-            toneMapped: false
-            // roughness: 0.5,
-            // color: 0xf8f5f2,
+            toneMapped: false,
         })
         this.plane = new THREE.Mesh(this.geometry, this.material)
         this.plane.rotation.x = -Math.PI / 2
@@ -32,11 +29,12 @@ export default class Floor {
     }
 
     setDebug() {
-        if (this.debug) {
-            this.debugFolder = this.debug.gui.addFolder('floor').open()
-            this.debugFolder.addColor(this.parameters, 'color').name('color').onChange(() => {
+        this.debugFolder = this.debug.gui.addFolder('floor').open()
+        this.debugFolder
+            .addColor(this.parameters, 'color')
+            .name('color')
+            .onChange(() => {
                 this.material.color.set(new THREE.Color(this.parameters.color))
             })
-        }
     }
 }

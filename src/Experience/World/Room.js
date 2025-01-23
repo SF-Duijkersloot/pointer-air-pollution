@@ -18,7 +18,7 @@ export default class Room {
         }
 
         this.setModel()
-        // this.onMouseMove()
+        this.onMouseMove()
     }
 
     setModel() {
@@ -34,20 +34,11 @@ export default class Room {
             child.receiveShadow = true
         })
 
-        // const curtains = this.roomScene.children.find(child => child.name === 'curtain')
-        // curtains.material.transparent = true
-        // curtains.material.opacity = 0.7
-
-        // this.scene.add(this.roomScene)
-        // this.roomScene.scale.set(0.5, 0.5, 0.5)
-
         this.roomGroup.add(this.roomScene)
         this.scene.add(this.roomGroup)
 
         this.roomGroup.scale.set(0.7, 0.7, 0.7)
-        // this.roomGroup.scale.set(0.65, 0.65, 0.65)
         this.roomGroup.position.y = -0.5
-        // this.roomGroup.position.x = 2
     }
 
     onMouseMove() {

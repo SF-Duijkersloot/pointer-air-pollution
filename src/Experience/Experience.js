@@ -16,7 +16,6 @@ export default class Experience {
     static instance
 
     constructor(canvas) {
-        
         // Singleton
         if (Experience.instance) {
             return Experience.instance
@@ -41,7 +40,6 @@ export default class Experience {
         this.time.on('update', () => {
             this.update()
         })
-
     }
 
     resize() {

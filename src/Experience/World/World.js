@@ -1,7 +1,7 @@
 import Experience from '../Experience.js'
 
 import Room from './Room.js'
-import Floor from  './Floor.js'	
+import Floor from './Floor.js'
 import Controls from './Controls.js'
 import Environment from './Environment.js'
 import ParticulateMatter from './ParticulateMatter.js'
@@ -23,8 +23,7 @@ export default class World {
         })
     }
 
-    resize() {
-    }
+    resize() {}
 
     update() {
         if (this.room) {
@@ -39,5 +38,4 @@ export default class World {
             this.particulateMatter.update()
         }
     }
-
 }

@@ -9,108 +9,146 @@ export default class Animations {
         this.experience = new Experience()
         this.sizes = this.experience.sizes
 
-        // Store DOM elements
         this.magnifyingGlass = document.querySelector('.magnifying-glass')
         this.whiteFiller = this.magnifyingGlass.querySelector('.white-filler')
         this.textWrapper = document.querySelector('.text-wrapper')
         this.introSection = document.querySelector('.intro-section')
+        this.particleGroup = document.querySelector('.particle-group')
         this.percentageSection = document.querySelector(
             '.impact-section.percentage'
         )
         this.percentageHeader = this.percentageSection.querySelector('h2 span')
         this.iconGrid = document.querySelector('.icon-grid')
+        this.medalElement = document.querySelector('.one-in-five img')
         this.categories = document.querySelectorAll('.category-container')
         this.progressCircles = document.querySelectorAll('.progress-circle')
 
-        this.createTimeline()
+        this.parralaxEffect()
+        this.magnifyEffect()
         this.countPercentage()
         this.instanceIconGrid()
-        this.gridAnimation()
+        this.oneInFiveAnimation()
 
-        // Wait for resources to be ready before initializing
+        // Wait for resources to be loaded
         this.experience.resources.on('ready', () => {
             this.setPath()
             this.particleObserver()
         })
     }
 
-    createTimeline() {
+    parralaxEffect() {
+        this.foregroundParticles = document.querySelectorAll(
+            '.hero-wrapper .foreground'
+        )
+        this.backgroundParticles = document.querySelectorAll(
+            '.hero-wrapper .background'
+        )
+
+        gsap.to(this.foregroundParticles, {
+            y: -125,
+            ease: 'power1.inOut',
+            scrollTrigger: {
+                trigger: '.hero-wrapper',
+                start: 'bottom bottom',
+                end: '50% top',
+                scrub: 0.8,
+            },
+        })
+
+        gsap.to(this.backgroundParticles, {
+            y: -75,
+            ease: 'power1.inOut',
+            scrollTrigger: {
+                trigger: '.hero-wrapper',
+                start: 'top bottom',
+                end: '50% top',
+                scrub: 0.8,
+            },
+        })
+    }
+
+    magnifyEffect() {
         this.timeline = gsap.timeline({
             scrollTrigger: {
                 trigger: '.sticky-wrapper',
-                start: 'top top', // Start animation when .sticky-wrapper hits the top
-                end: '80% bottom', // End animation when .sticky-wrapper leaves the viewport
-                scrub: true, // Tie animation progress to scroll
-                // pin: '.intro-section', // Pin the intro-section during the animation
-                // markers: true, // Debug markers
+                start: 'top 100%',
+                end: '80% bottom',
+                scrub: true,
                 onUpdate: (self) => {
-                    // Dynamically toggle display based on progress
                     if (self.progress === 1) {
                         this.introSection.style.backgroundColor =
                             'var(--color-beige)'
-                        this.magnifyingGlass.style.display = 'none' // Hide at the end
+                        this.magnifyingGlass.style.display = 'none'
                     } else {
                         this.introSection.style.backgroundColor = ''
-                        this.magnifyingGlass.style.display = 'block' // Show at any other scroll position
+                        this.magnifyingGlass.style.display = 'block'
                     }
                 },
             },
         })
 
-        // Magnifying glass animation
         this.timeline
             .to(this.magnifyingGlass, {
                 keyframes: [
                     {
                         transform:
-                            'translate3d(150%, 10%, 0) scale(1) rotate(300deg)', // Start
+                            'translate3d(150%, 10%, 0) scale(1) rotate(300deg)',
                         duration: 0,
                     },
                     {
                         transform:
-                            'translate3d(-115%, 10%, 0) scale(1) rotate(330deg)', // 50%
-                        duration: 0.4, // Adjust for mid-point
+                            'translate3d(-115%, 10%, 0) scale(1) rotate(330deg)',
+                        duration: 0.4,
                     },
                     {
                         transform:
-                            'translate3d(-35%, 170%, 0) scale(7.5) rotate(340deg)', // 100%
-                        duration: 0.6, // Adjust for end-point
+                            'translate3d(-35%, 170%, 0) scale(7.5) rotate(340deg)',
+                        duration: 0.6,
                     },
                 ],
                 ease: 'power1.inOut',
             })
 
-            // Filler opacity animation
             .to(
                 this.whiteFiller,
                 {
                     keyframes: [
-                        { opacity: 0, duration: 0 }, // 0-50%
-                        { opacity: 0, duration: 0.3 }, // Hold
-                        { opacity: 1, duration: 0.7 }, // Fade in
+                        { opacity: 0, duration: 0 },
+                        { opacity: 0, duration: 0.3 },
+                        { opacity: 1, duration: 0.7 },
                     ],
                     ease: 'linear',
                 },
-                '<' // Start at the same time as the magnifying glass animation
+                '<' // start at the same time as the previous animation
             )
 
-            // Text wrapper opacity and scale animation
             .to(
                 this.textWrapper,
                 {
                     keyframes: [
-                        { opacity: 0, scale: 0.5, duration: 0.6 }, // 0-60%
-                        { opacity: 0, scale: 0.5, duration: 0.1 }, // Hold
-                        { opacity: 1, scale: 1, duration: 0.3 }, // Fade in and scale up
+                        { opacity: 0, scale: 0.5, duration: 0.6 },
+                        { opacity: 0, scale: 0.5, duration: 0.1 },
+                        { opacity: 1, scale: 1, duration: 0.3 },
                     ],
                     ease: 'linear',
                 },
-                '<' // Start at the same time as the other animations
+                '<'
+            )
+
+            .to(
+                this.particleGroup,
+                {
+                    keyframes: [
+                        { opacity: 0, scale: 0.5, duration: 0.6 },
+                        { opacity: 0, scale: 0.5, duration: 0.2 },
+                        { opacity: 1, scale: 1, duration: 0.2 },
+                    ],
+                },
+                '<'
             )
     }
 
     countPercentage() {
-        // set observer
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -138,11 +176,10 @@ export default class Animations {
                 })
             },
             {
-                threshold: 0.5, // Trigger when 50% of the element is visible
+                threshold: 0.5,
             }
         )
 
-        // Observe the percentageHeader element
         observer.observe(this.percentageSection)
     }
 
@@ -153,9 +190,8 @@ export default class Animations {
         const highlightIndices = [
             1, 4, 10, 15, 23, 27, 32, 38, 40, 43, 50, 53, 60, 65, 71, 79, 87,
             95, 102, 105, 109, 110, 113, 119,
-        ] // Highlight these icons
+        ]
 
-        // Create 18 icons using the symbol reference
         for (let i = 0; i < rows * columns; i++) {
             const svg = document.createElementNS(
                 'http://www.w3.org/2000/svg',
@@ -167,11 +203,9 @@ export default class Animations {
                 'http://www.w3.org/2000/svg',
                 'use'
             )
-            use.setAttribute('href', '#person') // Use the symbol ID directly
-
+            use.setAttribute('href', '#person')
             svg.appendChild(use)
 
-            // Check if the index i is in the list of highlight indices
             if (highlightIndices.includes(i)) {
                 svg.classList.add('target')
             }
@@ -180,7 +214,7 @@ export default class Animations {
         }
     }
 
-    gridAnimation() {
+    oneInFiveAnimation() {
         const targetIcons = this.iconGrid.querySelectorAll('.icon.target')
 
         const observer = new IntersectionObserver(
@@ -189,35 +223,36 @@ export default class Animations {
                     if (entry.isIntersecting) {
                         observer.unobserve(entry.target)
 
-                        // Randomly shuffle targetIcons array
                         const iconsArray = Array.from(targetIcons)
                         this.shuffleArray(iconsArray)
 
                         const delay = 1500 / iconsArray.length
 
-                        // Add the '.active' class to each icon with a delay
                         iconsArray.forEach((icon, index) => {
                             setTimeout(() => {
                                 icon.classList.add('active')
-                            }, index * delay) // Delay each by 200ms for staggered effect
+                            }, index * delay)
                         })
+
+                        // Medal animation
+                        setTimeout(() => {
+                            this.medalElement.classList.add('active')
+                        }, 1250)
                     }
                 })
             },
             {
-                threshold: 1, // Trigger when 50% of the element is visible
+                threshold: 1,
             }
         )
 
-        // Observe the iconGrid element
         observer.observe(this.iconGrid)
     }
 
-    // Helper function to shuffle the array
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
-            ;[array[i], array[j]] = [array[j], array[i]] // Swap elements
+            ;[array[i], array[j]] = [array[j], array[i]]
         }
     }
 
@@ -229,11 +264,10 @@ export default class Animations {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Convert `this.categories` to an array and find the index
+                        // Convert categories to an array and find the index
                         const categoriesArray = Array.from(this.categories)
                         const index = categoriesArray.indexOf(entry.target)
 
-                        // Get the category name from the class list
                         const categoryClass = Array.from(
                             entry.target.classList
                         ).find(
@@ -256,18 +290,16 @@ export default class Animations {
                 })
             },
             {
-                threshold: 0.75, // Trigger when element is 50% visible
+                threshold: 0.75,
             }
         )
 
-        // Observe all category containers
         this.categories.forEach((category) => observer.observe(category))
     }
 
     progressIndicator(index) {
         const progressCircles = this.progressCircles
 
-        // Loop through all progress circles
         progressCircles.forEach((circle, i) => {
             if (i === index) {
                 circle.classList.add('active')
@@ -278,14 +310,14 @@ export default class Animations {
     }
 
     setPath() {
+        // Animate room movement
         this.roomGroup = this.experience.world.room.roomGroup
         this.timeline = gsap.timeline().to(this.roomGroup.position, {
             x: () => {
-                return this.sizes.width * 0.0011
+                return this.sizes.width * 0.0015
             },
             scrollTrigger: {
                 trigger: '.white-space',
-                // markers: true,
                 start: 'top top',
                 end: 'bottom top',
                 scrub: 0.6,

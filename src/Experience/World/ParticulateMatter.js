@@ -22,44 +22,56 @@ export default class ParticulateMatter {
             greyColor: '#d1d1d1',
         }
 
+        /* Particle scaling -----------------------
+         * Avg concentration: 8 µg/m³
+         * Dimension: 2m x 2m x 2m = 8m³
+         * 8 µg/m³ * 8m³ = 64 µg
+         * Avg mass of a PM10 (+pm2.5) particle: 5.24*10^−13 kg
+         * amount of particles: 1.22×10^5 = 122000
+         * The particle count of each category is defined by the share of the total mass
+         * Particles calculation based on: https://spacemath.gsfc.nasa.gov/earth/10Page105.pdf
+         -------------------------------------------*/
+
+        this.scaleFactor = 2
+
         this.categories = {
             bouw: {
-                count: 1530,
+                count: 5734 / this.scaleFactor,
                 color: '#fed000',
                 visible: false,
                 active: false,
                 index: 0,
             },
             landbouw: {
-                count: 1598,
+                count: 16226 / this.scaleFactor,
                 color: '#ff8205',
                 visible: false,
                 active: false,
                 index: 1,
             },
             industrie: {
-                count: 7035,
+                count: 20740 / this.scaleFactor,
                 color: '#ff5362',
                 visible: false,
                 active: false,
                 index: 2,
             },
             consumenten: {
-                count: 16264,
+                count: 34892 / this.scaleFactor,
                 color: '#98005e',
                 visible: false,
                 active: false,
                 index: 3,
             },
             verkeer: {
-                count: 15063,
+                count: 36844 / this.scaleFactor,
                 color: '#09b592',
                 visible: false,
                 active: false,
                 index: 4,
             },
             overig: {
-                count: 3360,
+                count: 7564 / this.scaleFactor,
                 color: '#2a3700',
                 visible: false,
                 active: false,
@@ -71,11 +83,10 @@ export default class ParticulateMatter {
         this.currentIndex = -1
 
         this.init()
-        this.setupDebug()
+        if (this.debug.active) this.setupDebug()
     }
 
     init() {
-        console.log('🎨 Initializing Particulate Matter systems')
         Object.entries(this.categories).forEach(([name, category]) => {
             const particleSystem = this.createParticleSystem(
                 category.count,
@@ -84,7 +95,6 @@ export default class ParticulateMatter {
             this.particles.set(name, particleSystem)
             this.roomGroup.add(particleSystem.points)
         })
-        console.log('✅ Particle systems initialized')
     }
 
     createParticleSystem(count, color) {
@@ -132,9 +142,7 @@ export default class ParticulateMatter {
     }
 
     updateCategoryState(categoryName) {
-        // Handle "totaal" case first
         if (categoryName === 'totaal') {
-            console.log('🌟 Showing all categories')
             this.showAllCategories()
             return
         }
@@ -146,11 +154,7 @@ export default class ParticulateMatter {
         }
 
         const newIndex = category.index
-        console.log(
-            `\n📍 Updating to category: ${categoryName} (index: ${newIndex})`
-        )
 
-        // Step 1: Make everything grey first
         Object.entries(this.categories).forEach(([name, cat]) => {
             if (cat.active) {
                 cat.active = false
@@ -158,7 +162,6 @@ export default class ParticulateMatter {
             }
         })
 
-        // Step 2: After 1 second, update visibility and activate new category
         setTimeout(() => {
             Object.entries(this.categories).forEach(([name, cat]) => {
                 // Update visibility states
@@ -186,7 +189,6 @@ export default class ParticulateMatter {
         this.currentIndex = newIndex
     }
 
-    // Split the update into two separate methods for better control
     updateParticleVisibility(categoryName) {
         const category = this.categories[categoryName]
         const particles = this.particles.get(categoryName)
@@ -212,7 +214,6 @@ export default class ParticulateMatter {
         })
     }
 
-    // Keep this for backwards compatibility but modify it to use the new split methods
     updateParticleSystem(categoryName) {
         const category = this.categories[categoryName]
         this.updateParticleVisibility(categoryName)
@@ -236,8 +237,6 @@ export default class ParticulateMatter {
     }
 
     setupDebug() {
-        if (!this.debug) return
-
         const gui = this.debug.gui.addFolder('Particulate Matter')
         const categories = gui.addFolder('Categories')
 

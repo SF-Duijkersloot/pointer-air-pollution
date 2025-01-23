@@ -4,7 +4,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 import Experience from '../Experience'
 
-export default class Resources extends EventEmitter{
+export default class Resources extends EventEmitter {
     constructor(assets) {
         super()
         this.experience = new Experience()
@@ -18,7 +18,6 @@ export default class Resources extends EventEmitter{
 
         this.setLoaders()
         this.startLoading()
-
     }
 
     setLoaders() {
@@ -30,25 +29,21 @@ export default class Resources extends EventEmitter{
     }
 
     startLoading() {
-        for(const asset of this.assets) {
+        for (const asset of this.assets) {
             if (asset.type === 'glbModel') {
                 this.loaders.gltfLoader.load(asset.path, (file) => {
                     this.singleAssetLoaded(asset, file)
                 })
-            }   
+            }
         }
     }
 
     singleAssetLoaded(asset, file) {
         this.items[asset.name] = file
         this.loaded++
-        
-        if(this.loaded === this.queue) {
-            console.log('All items loaded')
 
+        if (this.loaded === this.queue) {
             this.emit('ready')
         }
     }
-
-
 }

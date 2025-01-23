@@ -147,13 +147,6 @@ html.lenis body {
 
 /* Font faces */
 @font-face {
-    font-family: 'Formula Condensed Light';
-    font-style: normal;
-    font-weight: normal;
-    src: url('/fonts/FormulaCondensed-Light.woff') format('woff');
-}
-
-@font-face {
     font-family: 'Formula Condensed Bold';
     font-style: normal;
     font-weight: normal;
@@ -204,6 +197,7 @@ header > div > div {
     flex-direction: column;
     align-items: center;
     background: var(--hero-gradient);
+    overflow: clip;
 }
 
 .hero-section h1 {
@@ -226,6 +220,7 @@ header > div > div {
 .hero-section .underline {
     transform: translate(0, 70%);
     width: 45vw;
+    z-index: 5;
 }
 
 /************ Hero Background Styling ************/
@@ -242,7 +237,6 @@ header > div > div {
     position: absolute;
     width: 100%;
     height: 100vh;
-    overflow: hidden;
     z-index: 1;
 }
 
@@ -383,7 +377,15 @@ svg.hidden {
 
 .intro-section .text-wrapper {
     opacity: 0;
+    max-width: 50vw;
+    z-index: 150;
+}
+
+.particle-group {
+    opacity: 0;
+    position: absolute;
     z-index: 100;
+    width: 100%;
 }
 
 .magnifying-glass .white-filler {
@@ -498,6 +500,11 @@ svg.hidden {
     max-width: 60vw;
 }
 
+.one-in-five {
+    position: relative;
+    overflow: hidden;
+}
+
 .one-in-five span {
     font-family: Formula Condensed Bold;
     font-size: var(--size-1);
@@ -506,6 +513,18 @@ svg.hidden {
 
 .one-in-five a {
     color: black;
+}
+
+.one-in-five img {
+    position: absolute;
+    right: 0;
+    width: 15vw;
+    transform-origin: top center;
+    transform: translateX(50%) rotate(-20deg);
+}
+
+.one-in-five img.active {
+    animation: medal-swing 1.5s ease-in-out forwards;
 }
 
 /************ Media Query ************/
@@ -536,6 +555,7 @@ svg.hidden {
     justify-content: start;
     gap: 0;
     margin-top: 10vh;
+    overflow: hidden;
 }
 
 .bar-chart-introduction {
@@ -548,7 +568,6 @@ svg.hidden {
     height: 75vh;
     width: 100%;
     margin-bottom: 15vh;
-    overflow: hidden;
 }
 
 .bar-chart-introduction h2 {
@@ -794,7 +813,9 @@ svg.hidden {
 
 .experience-wrapper {
     height: 840vh;
+    /* tv; 970vh */
     position: relative;
+    overflow: clip;
 }
 
 .white-space {
@@ -980,52 +1001,29 @@ footer {
 
 footer .text-wrapper {
     gap: var(--space-l);
+    z-index: 10;
+}
+
+footer .foreground,
+footer .foreground {
+    overflow: hidden;
 }
 
 footer svg {
     position: absolute;
 }
 
-
 /*************************************
               Keyframes            
 /*************************************/
-
-@keyframes magnifying-glass {
+@keyframes medal-swing {
     0% {
-        transform: translate(150%, 10%) scale(1) rotate(300deg);
+        transform: translateX(50%) rotate(-20deg);
     }
-    50% {
-        transform: translate(-115%, 10%) scale(1) rotate(330deg);
+    70% {
+        transform: translateX(50%) rotate(20deg);
     }
     100% {
-        transform: translate(-25%, 160%) scale(7.5) rotate(340deg);
-    }
-}
-
-@keyframes filler-opacity {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes text-opacity {
-    0% {
-        opacity: 0;
-        scale: 0.5;
-    }
-    60% {
-        opacity: 0;
-        scale: 0.5;
-    }
-    100% {
-        opacity: 1;
-        scale: 1;
+        transform: translateX(50%) rotate(10deg);
     }
 }

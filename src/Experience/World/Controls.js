@@ -1,6 +1,6 @@
 import Lenis from 'lenis'
 import gsap from 'gsap'
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 import Experience from '../Experience.js'
@@ -19,7 +19,7 @@ export default class Controls {
         const lenis = new Lenis({
             lerp: 0.1,
             smooth: true,
-    })
+        })
 
         // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
         lenis.on('scroll', ScrollTrigger.update)
