@@ -18,7 +18,7 @@ export default class Room {
         }
 
         this.setModel()
-        this.onMouseMove()
+        // this.onMouseMove()
     }
 
     setModel() {
@@ -44,9 +44,10 @@ export default class Room {
         this.roomGroup.add(this.roomScene)
         this.scene.add(this.roomGroup)
 
-        this.roomGroup.scale.set(0.65, 0.65, 0.65)
+        this.roomGroup.scale.set(0.7, 0.7, 0.7)
+        // this.roomGroup.scale.set(0.65, 0.65, 0.65)
         this.roomGroup.position.y = -0.5
-        this.roomGroup.position.x = 2
+        // this.roomGroup.position.x = 2
     }
 
     onMouseMove() {

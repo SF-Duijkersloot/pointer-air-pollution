@@ -111,6 +111,7 @@
 
 body {
     background-color: var(--color-beige);
+    /* overflow-x: hidden; */
 }
 
 h1,
@@ -124,6 +125,24 @@ h6 {
 
 p {
     font-family: Inter;
+}
+
+/************ lenis Smooth Scroll styling ************/
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+    pointer-events: none;
 }
 
 /* Font faces */
@@ -223,6 +242,7 @@ header > div > div {
     position: absolute;
     width: 100%;
     height: 100vh;
+    overflow: hidden;
     z-index: 1;
 }
 
@@ -357,11 +377,14 @@ svg.hidden {
     /* opacity: 0.1; */
 }
 
+.intro-section {
+    overflow: hidden;
+}
+
 .intro-section .text-wrapper {
     opacity: 0;
     z-index: 100;
 }
-
 
 .magnifying-glass .white-filler {
     position: absolute;
@@ -420,6 +443,20 @@ svg.hidden {
 
 .impact-section.percentage {
     margin-top: 10vh;
+    position: relative;
+}
+
+.impact-section .text-wrapper {
+    position: relative;
+}
+
+.impact-section.percentage svg {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50vw;
+    height: 12.5vw;
+    transform: translateY(50%);
 }
 
 .impact-section h2 {
@@ -459,13 +496,16 @@ svg.hidden {
     justify-content: center;
     flex-direction: column;
     max-width: 60vw;
-    /* border: 1px solid red; */
 }
 
 .one-in-five span {
     font-family: Formula Condensed Bold;
     font-size: var(--size-1);
     color: var(--color-dark-purple);
+}
+
+.one-in-five a {
+    color: black;
 }
 
 /************ Media Query ************/
@@ -492,34 +532,63 @@ svg.hidden {
 
 /************ Bar chart ************/
 .impact-section.bar-chart {
-    height: 505vh;
+    height: fit-content;
     justify-content: start;
     gap: 0;
     margin-top: 10vh;
 }
 
 .bar-chart-introduction {
+    position: relative;
     display: flex;
     gap: var(--space-s);
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 75vh;
+    width: 100%;
     margin-bottom: 15vh;
+    overflow: hidden;
 }
 
 .bar-chart-introduction h2 {
     font-size: var(--size-4);
 }
 
+.circle-style-element {
+    position: absolute;
+    width: 15vw;
+    aspect-ratio: 1 / 2;
+    border-radius: 100%;
+    border: 0.75vw dashed var(--color-dark-purple);
+    opacity: 0.05;
+    z-index: -1;
+}
+
+.circle-style-element.left {
+    top: 0;
+    left: 0;
+    width: 17vw;
+    transform: translate(-10%, 75%) rotate(125deg);
+}
+
+.circle-style-element.right {
+    top: 0;
+    right: 0;
+    transform: translate(20%, 5%) rotate(-130deg);
+}
+
 .bar-container {
-    height: 200vh;
     width: 100%;
+}
+
+.bar-wrapper {
     display: flex;
     gap: var(--space-s);
     justify-content: space-around;
     flex-direction: row-reverse;
     align-items: end;
+    height: 200vh;
 }
 
 .bar {
@@ -575,7 +644,6 @@ svg.hidden {
 
 /* Fullscreen text styling */
 .explanation-wrapper {
-    height: 175vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -594,16 +662,12 @@ svg.hidden {
     color: var(--color-light-purple);
 }
 
+.explanation-wrapper .text-wrapper:nth-of-type(1) {
+    margin-top: 25vh;
+}
 
-/* City comparison */
-.city-wrapper {
-    height: 60%;
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.explanation-wrapper .text-wrapper:nth-of-type(2) {
+    margin-top: 30vh;
 }
 
 .image-wrapper {
@@ -625,11 +689,76 @@ svg.hidden {
 .image-wrapper img {
     position: absolute;
     width: 50%;
+}
 
+/************ Money comparison ************/
+.money-comparison {
+    position: relative;
+    margin-top: 20vh;
+    height: 100vh;
+    width: 100%;
+    gap: var(--space-s);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: var(--size-0);
+    line-height: 136%;
+    overflow: hidden;
+}
+
+.money-comparison span {
+    font-family: Formula Condensed Bold;
+    font-size: var(--size-2);
+    color: var(--color-dark-purple);
+}
+
+.money-comparison b {
+    color: var(--color-dark-purple);
+}
+
+.money-comparison a {
+    /* color: var(--color-dark-purple); */
+    color: black;
+}
+
+.money-bag {
+    position: absolute;
+    display: flex;
+    gap: 1vw;
+    flex-direction: column;
+    align-items: center;
+    z-index: -1;
+}
+
+.money-bag p {
+    font-family: Formula Condensed Bold;
+    font-size: var(--size-2);
+    color: var(--color-dark-purple);
+}
+
+.money-bag.small {
+    bottom: 0;
+    left: 3vw;
+}
+.money-bag.small img {
+    width: var(--size-6);
+}
+
+.money-bag.big {
+    bottom: 0;
+    right: 3vw;
+}
+.money-bag.big img {
+    top: -1vw;
+    position: absolute;
+    width: calc(var(--size-6) * 4);
+    transform: translate(15%, -100%);
 }
 
 /************ Experience Introduction ************/
 .experience-introduction {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -638,7 +767,14 @@ svg.hidden {
     font-family: Inter;
     font-size: var(--size-0);
     line-height: 136%;
-    border: 1px solid red;
+}
+
+.experience-introduction img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40vw;
+    z-index: -1;
 }
 
 /*************************************
@@ -647,7 +783,7 @@ svg.hidden {
 .experience {
     position: sticky;
     top: 0;
-    width: 100vh;
+    width: 100vw;
     height: 100vh;
 }
 
@@ -657,18 +793,21 @@ svg.hidden {
 }
 
 .experience-wrapper {
-    height: 700vh;
+    height: 840vh;
     position: relative;
+}
+
+.white-space {
+    height: 75vh;
 }
 
 /************ Sidebar Styling ************/
 .side-bar-wrapper {
     display: flex;
     position: absolute;
-    height: 100%;
+    height: inherit;
     width: 40%;
     z-index: 10;
-    /* background-color: #c5c5c5; */
 }
 
 .side-bar-content {
@@ -677,6 +816,16 @@ svg.hidden {
     flex-direction: column;
     gap: 35vh;
     width: 82.5%;
+    height: fit-content;
+}
+
+.side-bar-content .introduction-text {
+    margin-top: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--size-0);
+    line-height: 136%;
 }
 
 .category-container {
@@ -702,6 +851,31 @@ p.category-subtext {
 p.emission-number {
     margin-top: var(--space-s);
     font-size: var(--size-1);
+}
+
+/************ Progress Indicator ************/
+.progress-indicator {
+    position: sticky;
+    top: 0;
+    margin-top: 175vh;
+    width: 17.5%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.progress-circle {
+    width: 1em;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    border: 1px solid var(--color-dark-purple);
+}
+
+.progress-circle.active {
+    background-color: var(--color-dark-purple);
 }
 
 /* Percentage Bar */
@@ -788,29 +962,30 @@ p.emission-number {
     color: var(--color-dark-purple);
 }
 
-/************ Progress Indicator ************/
-.progress-indicator {
-    position: sticky;
-    top: 0;
-    width: 17.5%;
+/*************************************
+            Footer Conclusion            
+/*************************************/
+footer {
     height: 100vh;
+    width: 100%;
+    border-radius: 2vw 2vw 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: var(--space-xs);
-}
-
-.progress-circle {
-    width: 1em;
-    aspect-ratio: 1;
-    border-radius: 100%;
-    border: 1px solid var(--color-dark-purple);
-}
-
-.progress-circle.active {
+    font-size: var(--size-0);
+    font-weight: 300;
     background-color: var(--color-dark-purple);
+    color: var(--color-beige);
 }
+
+footer .text-wrapper {
+    gap: var(--space-l);
+}
+
+footer svg {
+    position: absolute;
+}
+
 
 /*************************************
               Keyframes            
@@ -853,21 +1028,4 @@ p.emission-number {
         opacity: 1;
         scale: 1;
     }
-}
-
-footer {
-    height: 110vh;
-    padding-top: 10vh;
-    border-radius: 2vw 2vw 0 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: var(--size-0);
-    font-weight: 300;
-    background-color: var(--color-dark-purple);
-    color: var(--color-beige);
-}
-
-footer .text-wrapper {
-    gap: var(--space-l);
 }
