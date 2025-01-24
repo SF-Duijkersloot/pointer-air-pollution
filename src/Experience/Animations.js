@@ -314,7 +314,7 @@ export default class Animations {
         this.roomGroup = this.experience.world.room.roomGroup
         this.timeline = gsap.timeline().to(this.roomGroup.position, {
             x: () => {
-                return this.sizes.width * 0.0015
+                return this.sizes.width * 0.0011
             },
             scrollTrigger: {
                 trigger: '.white-space',
